@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="icon" href="link shield.png">
+    <meta name="viewport" content="width=device-width">
+    <title>Soul Hunter</title>
+    <link href="index.css" rel="stylesheet" type="text/css" />
+    <style>
+      canvas {background: #eee; display: block; margin: 0 auto; }
+    </style>
+  </head>
+  <body>
+
+    <h1>Soul Hunter</h1>
+	<h3>Little Genius</h3>
+
+    <canvas id='back canvas' style="display:none;" width="1200" height="750"></canvas>
+    <canvas id='main canvas' width="1200" height="750"></canvas>
+
+	<!--- letters -->
+		<img id="letterA" style="display:none;" width="10" height="10" src="letters/Letter A.png">
+		<img id="letterB" style="display:none;" width="10" height="10" src="letters/Letter B.png">
+		<img id="letterC" style="display:none;" width="10" height="10" src="letters/Letter C.png">
+		<img id="letterD" style="display:none;" width="10" height="10" src="letters/Letter D.png">
+		<img id="letterE" style="display:none;" width="10" height="10" src="letters/Letter E.png">
+
+		<img id="letterF" style="display:none;" width="10" height="10" src="letters/Letter F.png">
+		<img id="letterG" style="display:none;" width="10" height="10" src="letters/Letter G.png">
+		<img id="letterH" style="display:none;" width="10" height="10" src="letters/Letter H.png">
+		<img id="letterI" style="display:none;" width="10" height="10" src="letters/Letter I.png">
+		<img id="letterG" style="display:none;" width="10" height="10" src="letters/Letter J.png">
+		<img id="letterK" style="display:none;" width="10" height="10" src="letters/Letter K.png">
+		<img id="letterL" style="display:none;" width="10" height="10" src="letters/Letter L.png">
+		<img id="letterM" style="display:none;" width="10" height="10" src="letters/Letter M.png">
+		<img id="letterN" style="display:none;" width="10" height="10" src="letters/Letter N.png">
+		<img id="letterO" style="display:none;" width="10" height="10" src="letters/Letter O.png">
+		<img id="letterP" style="display:none;" width="10" height="10" src="letters/Letter P.png">
+		<img id="letterQ" style="display:none;" width="10" height="10" src="letters/Letter Q.png">
+		<img id="letterR" style="display:none;" width="10" height="10" src="letters/Letter R.png">
+		<img id="letterS" style="display:none;" width="10" height="10" src="letters/Letter S.png">
+		<img id="letterT" style="display:none;" width="10" height="10" src="letters/Letter T.png">
+		<img id="letterU" style="display:none;" width="10" height="10" src="letters/Letter U.png">
+		<img id="letterV" style="display:none;" width="10" height="10" src="letters/Letter V.png">
+		<img id="letterW" style="display:none;" width="10" height="10" src="letters/Letter W.png">
+		<img id="letterX" style="display:none;" width="10" height="10" src="letters/Letter X.png">
+		<img id="letterY" style="display:none;" width="10" height="10" src="letters/Letter Y.png">
+		<img id="letterZ" style="display:none;" width="10" height="10" src="letters/Letter Z.png">
+	
+	<!-- background images -->
+		<img id="boundaries" style="display:none;" width="40" height="40" src="BGs/zelda map boundaries.png">
+    <img id="background" style="display:none;" width="40" height="40" src="BGs/zelda map.png">	
+    <img id="title screen" style="display:none;" width="45" height="33" src="BGs/title screen.png">	
+
+	<!-- moving images -->
+		<img id="playerDown" style="display:none;" width="155" height="30" src="move/link Move down.png">
+    <img id="playerUp" style="display:none;" width="155" height="28" src="move/link Move up.png">
+    <img id="playerLeft" style="display:none;" width="162" height="28" src="move/link Move left.png">
+    <img id="playerRight" style="display:none;" width="143" height="28" src="move/link Move right.png">
+
+	<!-- background images -->
+    <img id="sword up" style="display:none;" width="143" height="28" src="items/link sword up.png">
+    <img id="sword down"style="display:none;" width="143" height="28" src="items/link sword down.png">
+    <img id="sword left" style="display:none;" width="18" height="96" src="items/link sword left.png">
+		<img id="sword right" style="display:none;" width="18" height="96" src="items/link sword right.png">
+
+	<!-- shield images -->
+    <img id="shield" style="display:none;" width="69" height="18" src="items/link shield.png">
+
+	<!-- Miscellaneous -->
+		<img id="surprise" style="display:none;" width="69" height="18" src="items/surprise.png">
+		<img id="cursor" style="display:none;" width="10" height="10" src="cursor.png">
+
+	<!-- swordswings images -->
+		<img id="swordswing down" style="display:none;" width="53" height="28" src="move/swordswings/link swordswing down.png">
+		<img id="swordswing up" style="display:none;" width="53" height="28" src="move/swordswings/link swordswing up.png">
+		<img id="swordswing left" style="display:none;" width="121" height="25" src="move/swordswings/link swordswing left.png">
+		<img id="swordswing right" style="display:none;" width="121" height="25" src="move/swordswings/link swordswing right.png">
+
+	<!-- combat   -->
+		<img id="player jonny" style="display:none;" width="10" height="10" src="combat/combat still.png">	
+		<img id="jonny win pose" style="display:none;" width="10" height="10" src="combat/link win pose.png">
+		<img id="sword spin" style="display:none;" width="10" height="10" src="combat/sword spin.png">
+
+	<!-- enemy   -->
+		<img id="swordsmen" style="display:none;" width="10" height="10" src="enemies/swords men minion.png">
+		<img id="shieldsmen" style="display:none;" width="10" height="10" src="enemies/shields men minion.png">
+		<img id="spearsmen" style="display:none;" width="10" height="10" src="enemies/spear men minion.png">
+		<img id="bombermen" style="display:none;" width="10" height="10" src="enemies/bomber men minion.png">
+
+	<!-- death enemy-->
+		<img id="enemy death" style="display:none;" width="10" height="10" src="enemies/enemy death.png">
+
+    <script src="Main.js"></script>
+    <script src="Combat.js"></script>
+
+	</body>
+</html>
