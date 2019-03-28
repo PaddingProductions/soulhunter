@@ -97,7 +97,7 @@ const drawBG = () => {
 		break;
 
 		case 'start?':
-			ctx.drawImage(titleScreen, 0, 0, g_BGsizex, g_BGsizey);
+			ctx.drawImage(titleScreen, 0, 0, g_BGsizeX, g_BGsizeY);
 		break;
 
 		case 'game':
@@ -137,14 +137,14 @@ const drawBG = () => {
 				// be seen on the outside of the circle.
 		
 				ctx.fillStyle = '#000'
-				ctx.fillRect(0,0,g_BGsizex,g_BGsizey);
+				ctx.fillRect(0,0,g_BGsizeX,g_BGsizeY);
 				
 				//screen flicing effect
 				ctx.fillStyle = '#f00'
 				if (appearFrame%6 < 3) {
-					ctx.fillRect(0,0,g_BGsizex/2,g_BGsizey);
+					ctx.fillRect(0,0,g_BGsizeX/2,g_BGsizeY);
 				} else {
-					ctx.fillRect(g_BGsizex/2 ,0,g_BGsizex/2,g_BGsizey);
+					ctx.fillRect(g_BGsizeX/2 ,0,g_BGsizeX/2,g_BGsizeY);
 				}
 				
 				startBattle();

@@ -265,5 +265,3 @@ const actionManagement = (action, attacker, victim) => {
 		victim['status'] = null;
 	},2000);
 }
-
-startBattle();
