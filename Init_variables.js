@@ -56,6 +56,10 @@ const swordswing = document.getElementById('swordswing left');
 const swordSpin = document.getElementById('sword spin');
 const jonnyWinPose = document.getElementById('jonny win pose');
 
+//Shine Images
+const shineAppearence = document.getElementById('Shine appearence');
+
+
 cursor = document.getElementById('cursor');
 
 //letter
@@ -86,6 +90,19 @@ var letterList = {
 	'x': document.getElementById('letterX'),
 	'y': document.getElementById('letterY'),
 	'z': document.getElementById('letterZ'),
+
+	'/': document.getElementById('slash'),
+
+	'0': document.getElementById('number0'),
+	'1': document.getElementById('number1'),
+	'2': document.getElementById('number2'),
+	'3': document.getElementById('number3'),
+	'4': document.getElementById('number4'),
+	'5': document.getElementById('number5'),
+	'6': document.getElementById('number6'),
+	'7': document.getElementById('number7'),
+	'8': document.getElementById('number8'),
+	'9': document.getElementById('number9'),
 }
 
 
@@ -115,9 +132,6 @@ let g_frameNum = 0;
 // which frame the sword swing is on
 let g_swordFrame = -1;
 
-// percentage chance of enemy appearence every second
-const enemyAppearencePerSecond = 1;
-
 //player postion
 let playerPosX = 0;
 let playerPosY = 0;
@@ -128,7 +142,7 @@ playerPosX -= 2247 - (g_BGsizeX/PX_NUM)/2;
 playerPosY -= 2853 - (g_BGsizeX/PX_NUM)/2; 
 
 
-let direct = 0;
+let direct = 2;
 
 // the letters to be printed
 var letterPrint = [];
@@ -287,3 +301,11 @@ for (let c = 0; c < 3; c++) {
 g_buttonPos[0] = 'attack';
 g_buttonPos[1] = 'defend';
 g_buttonPos[2] = 'escape';
+
+//Additional characters
+
+//the location of where Shine will spawn. 
+const ShineAppearLocation = [1267,2807];
+
+// percentage chance of enemy appearence every second
+const enemyAppearencePerSecond = 1;

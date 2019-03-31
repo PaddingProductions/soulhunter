@@ -11,8 +11,8 @@ const startBattle = () => {
 	} else if (enemy === undefined) {
 		///setting up enemy when the animation is over.
 		enemy = [];
-		enemy.push(g_bestiary['swordsmen']);
-		enemy.push(g_bestiary['spearsmen']);
+		enemy.push(bestiary['swordsmen']);
+		enemy.push(bestiary['spearsmen']);
 	}	
 }
 

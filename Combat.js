@@ -1,5 +1,7 @@
 const endBattle = () => {
-	
+	if ((1200-disapearFrame*30)/2 < 0) {
+		g_BGstats = 'game';
+	}
 	ctx.beginPath();
 	ctx.arc(600,375,(1200-disapearFrame*30)/2,0, Math.PI*2, true);
 	ctx.clip();
@@ -123,6 +125,7 @@ const drawEnemies = (enemies) => {
 			default:
 
 				//getting the image of the enemy
+				console.log(enemies[i]['NAME']);
 				img = enemyImages[enemies[i]['NAME']];
 				ctx.drawImage(img, imgx, imgy, 32 * PX_NUM, 30 * PX_NUM);
 			break;
@@ -176,7 +179,7 @@ const drawCharacterStats = (words) => {
 		ctx.fillStyle = '#bcbcbc';
 		ctx.rect(imgx, imgy, 960, 50);
 		ctx.stroke();
-
+        console.log(words[i]);
 		//writing the name of the fighter
 		writeWord(words[i], imgx + 10, imgy + 10);
 
@@ -198,6 +201,7 @@ const drawCharacterStats = (words) => {
 }
 
 const turnManagement = () =>{
+	console.log("step two check");
 	// if it is the player's turn, then draw the action buttons.
 	if (is_in(g_turnList[0]['NAME'], playerStatus['party'])) {
   
@@ -264,4 +268,4 @@ const actionManagement = (action, attacker, victim) => {
 
 		victim['status'] = null;
 	},2000);
-}
+} 

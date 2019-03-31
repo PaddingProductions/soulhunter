@@ -105,30 +105,34 @@ const drawBG = () => {
 			imgx = playerPosX * PX_NUM;
 			imgy = playerPosY * PX_NUM;
 
-
 			//draw the bounderies skin first.	
-			Bctx.drawImage(boundaries, imgx, imgy,
-				4109 * PX_NUM, 4110 * PX_NUM);
+			Bctx.drawImage(boundaries, imgx, imgy, 4109 * PX_NUM, 4110 * PX_NUM);
 
-			ctx.drawImage(background, imgx, imgy,
-				4109 * PX_NUM, 4110 * PX_NUM);
+			ctx.drawImage(background, imgx, imgy, 4109 * PX_NUM, 4110 * PX_NUM);
 
 			drawPlayer();
 			//drawShield();
 			drawSword();
+
+			//drawing Shine
+			imgx = (ShineAppearLocation[0] - (0-playerPosX))*PX_NUM;
+			imgy = (ShineAppearLocation[1] - (0-playerPosY))*PX_NUM;
+
+		    ctx.drawImage(shineAppearence, imgx-14/2, imgy-21/2, 14 * PX_NUM, 21*PX_NUM);
 		break;
 		
 		case 'surprise':
 							
-			imgx = PX_NUM + playerPosX;
-			imgy = PX_NUM + playerPosY;
+			imgx = playerPosX * PX_NUM;
+			imgy = playerPosY * PX_NUM;
 
 			ctx.drawImage(background, imgx, imgy,
 				4109 * PX_NUM, 4110 * PX_NUM);
 
 			drawPlayer();
 			drawShield();
-			ctx.drawImage(surprise, centerX-15*PX_NUM, centerY-15*PX_NUM, 15*PX_NUM, 15*PX_NUM);
+			ctx.drawImage(surprise, centerX-15*PX_NUM, centerY-30*PX_NUM, 15*PX_NUM, 15*PX_NUM);
+
 		break;
 		case 'fight':
 			ctx.save();
@@ -149,8 +153,8 @@ const drawBG = () => {
 				
 				startBattle();
 
-				imgx = PX_NUM + playerPosX;
-				imgy = PX_NUM + playerPosY;
+					imgx = playerPosX * PX_NUM;
+					imgy = playerPosY * PX_NUM;
 
 				ctx.drawImage(background, imgx, imgy,
 					4109 * PX_NUM, 4110 * PX_NUM);
@@ -162,6 +166,7 @@ const drawBG = () => {
 			ctx.restore()
 		break;
 		case 'jonny attack':
+		    console.log("step three check");
 			drawCharacterStats(['jonny'])
 			drawCursor();
 			drawCharacters(['jonny']);
@@ -174,23 +179,12 @@ const drawBG = () => {
 		break;
 
 		case 'jonny action':
+			console.log("step three check");
 			drawButtons(playerStatus['jonny']['abilities']);
 			drawCharacterStats(['jonny']);
 			drawCursor();
 			drawCharacters(['jonny']);
 			drawEnemies(enemy);
-		break;
-		
-		case 'enemy attack':
-			writeWord('hyaaaaaaa', 300, 300);
-
-			drawCharacterStats(['jonny'])
-			drawCursor();
-			drawCharacters(['jonny']);
-			drawEnemies(enemy);
-			if (g_DMG !== undefined && g_DMG !== null) {
-				writeWord(`${g_DMG}`, 200 ,200);
-			}
 		break;
 
 		case 'select target':
@@ -228,6 +222,8 @@ const drawBG = () => {
 			const action = g_BGstats.split(" ")[1];
 
 			if (is_in(attacker, playerStatus['party']) === false && action === 'attack') {
+				console.log("step three check (enemy)");
+
 				writeWord('hyaaaaaaa', 300, 300);
 
 				drawCharacterStats(['jonny'])
@@ -314,6 +310,7 @@ const mainLoop = () => {
 		}
 		// if the turn has ended and needs to genrate a new order
 		if (g_turnList.length === 0) {
+			console.log("step one check");
 			//for now it will be a player 60 and enemy 40 chance.
 			// this is the percentage
 			let Num = Math.floor(Math.random()*100);
@@ -369,7 +366,7 @@ setInterval(mainLoop, 66);
 setInterval(() => {
 	if (g_BGstats === 'game') {
 		const random = Math.floor(Math.random()*100);
-		if (random <= enemyAppearencePerSecond) {
+		if (random < enemyAppearencePerSecond) {
 			g_BGstats = 'surprise';
 			setTimeout(()=> {
 				g_BGstats = 'fight';
