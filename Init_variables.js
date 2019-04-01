@@ -117,11 +117,11 @@ let speed = 3;
 //num of px(on screen) in a px(on game)
 const PX_NUM = 3;
 
-const g_BGsizeX = 1200;
-const g_BGsizeY = 750;
+const g_screenSizeX = 1200;
+const g_screenSizeY = 750;
 
-const centerX = g_BGsizeX / 2;
-const centerY = g_BGsizeY / 2;
+const centerX = g_screenSizeX / 2;
+const centerY = g_screenSizeY / 2;
 
 // which frame it's on (enemy animation)
 let appearFrame = 0;
@@ -138,8 +138,8 @@ let playerPosY = 0;
 
 
 // the amount added to playerx and playery to get to the spawn point
-playerPosX -= 2247 - (g_BGsizeX/PX_NUM)/2;
-playerPosY -= 2853 - (g_BGsizeX/PX_NUM)/2; 
+playerPosX -= 2247 - (g_screenSizeX/PX_NUM)/2;
+playerPosY -= 2851 - (g_screenSizeY/PX_NUM)/2; 
 
 
 let direct = 2;
@@ -309,3 +309,13 @@ const ShineAppearLocation = [1267,2807];
 
 // percentage chance of enemy appearence every second
 const enemyAppearencePerSecond = 1;
+
+// dialogues of different people when you talk to them
+// every person has a dialogue array. when you talk to them, you will call the first string in the array
+// then when you press "S" you will go on to the next string.
+
+g_dialogue = {
+	'Shine': ['hmm? who are you?', 
+	  'you are a travler? i see, and you wish to me to aid you on your adventure?', 
+	  'very well, since i got nothing else to do, might as well be of use'],
+}

@@ -5,7 +5,7 @@ const endBattle = () => {
 	ctx.beginPath();
 	ctx.arc(600,375,(1200-disapearFrame*30)/2,0, Math.PI*2, true);
 	ctx.clip();
-    disapearFrame += 1;
+	disapearFrame += 1;
 };
 
 const drawCharacters = (characters) => {

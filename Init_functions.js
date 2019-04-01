@@ -82,11 +82,11 @@ const drawBG = () => {
 	ctx.lineWidth = '5';
 	
 	if (g_BGstats !== 'end') {
-		ctx.fillRect(0, 0, g_BGsizeX, g_BGsizeY);
-		ctx.rect(0, 0, g_BGsizeX, g_BGsizeY);
+		ctx.fillRect(0, 0, g_screenSizeX, g_screenSizeY);
+		ctx.rect(0, 0, g_screenSizeX, g_screenSizeY);
 	} else {
 		ctx.fillStyle = '#000'
-		ctx.fillRect(0,0, g_BGsizeX, g_BGsizeY)
+		ctx.fillRect(0,0, g_screenSizeX, g_screenSizeY)
 	}
 	ctx.stroke();
 	
@@ -97,7 +97,7 @@ const drawBG = () => {
 		break;
 
 		case 'start?':
-			ctx.drawImage(titleScreen, 0, 0, g_BGsizeX, g_BGsizeY);
+			ctx.drawImage(titleScreen, 0, 0, g_screenSizeX, g_screenSizeY);
 		break;
 
 		case 'game':
@@ -118,7 +118,7 @@ const drawBG = () => {
 			imgx = (ShineAppearLocation[0] - (0-playerPosX))*PX_NUM;
 			imgy = (ShineAppearLocation[1] - (0-playerPosY))*PX_NUM;
 
-		    ctx.drawImage(shineAppearence, imgx-14/2, imgy-21/2, 14 * PX_NUM, 21*PX_NUM);
+		    ctx.drawImage(shineAppearence, imgx-(14/2*PX_NUM), imgy-(21/2*PX_NUM), 14 * PX_NUM, 21*PX_NUM);
 		break;
 		
 		case 'surprise':
@@ -141,14 +141,14 @@ const drawBG = () => {
 				// be seen on the outside of the circle.
 		
 				ctx.fillStyle = '#000'
-				ctx.fillRect(0,0,g_BGsizeX,g_BGsizeY);
+				ctx.fillRect(0,0,g_screenSizeX,g_screenSizeY);
 				
 				//screen flicing effect
 				ctx.fillStyle = '#f00'
 				if (appearFrame%6 < 3) {
-					ctx.fillRect(0,0,g_BGsizeX/2,g_BGsizeY);
+					ctx.fillRect(0,0,g_screenSizeX/2,g_screenSizeY);
 				} else {
-					ctx.fillRect(g_BGsizeX/2 ,0,g_BGsizeX/2,g_BGsizeY);
+					ctx.fillRect(g_screenSizeX/2 ,0,g_screenSizeX/2,g_screenSizeY);
 				}
 				
 				startBattle();
@@ -208,7 +208,7 @@ const drawBG = () => {
 				endBattle();
 
 				ctx.fillStyle = '#7c7c7c'
-				ctx.fillRect(0,0, g_BGsizeX, g_BGsizeY)
+				ctx.fillRect(0,0, g_screenSizeX, g_screenSizeY)
 
 				drawCharacterStats(['jonny']);
 				drawCharacters(['jonny']);
