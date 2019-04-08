@@ -1,4 +1,4 @@
-function is_in(a, vector) {
+const is_in = (a, vector) => {
 	for (let i=0;i < vector.length; i++) {
 		if (vector[i] === a) {
 			return true;
@@ -34,14 +34,33 @@ const handleKeyUp = e => {
 	if (g_mousePos[0] < 0 || g_mousePos[1] < 0) {
 		g_mousePos = lastPos;
 	}
+	// diaogue shi*
+	if (currentKey['68']) {
+		for (let i = 0; i < g_NPC.length; i++) {
+			npcX = g_NPC[0].init_x;
+			npcY = g_NPC[0].init_y;
+			//you need to find the distance between you and the NPC.
+			// note that the number is divided by PX_NUM
+			distanceX = 0-playerPosX - (npcX-g_screenSizeX/2/PX_NUM);
+			distanceY = 0-playerPosY - (npcY-g_screenSizeY/2/PX_NUM);
+			console.log(`x = ${distanceX}`)
+			console.log(`y = ${distanceY}`)
 
+			if (distanceX < 30 && distanceX > -30) {
+				if (distanceY <= 30 && distanceY >= -30) {
+					//changes BGstats, and set the dialogue strings
+					g_currentDialogue = g_NPC[i].dialogue;
+					g_BGstats = 'talk';
+				}
+			}
+		}
+	}
+	// if in diaogue and you press next ("s"key)
+	if (currentKey['83'] && g_BGstats === 'talk') {
+		g_currentDialogue.shift();
+	}
 	//resetting keys
-	currentKey['37'] = 0;
-	currentKey['38'] = 0;
-	currentKey['39'] = 0;
-	currentKey['40'] = 0;
-	currentKey['83'] = 0;
-	currentKey['65'] = 0;
+
 	// walking system needs this because of the diagnal walks.
 	if (currentKey['222'] == 1) { currentKey['222'] = 2 };
 	if (currentKey['76'] == 1) { currentKey['76'] = 2 };
@@ -52,8 +71,16 @@ const handleKeyUp = e => {
 	if (currentKey['76'] == 2) { currentKey['76'] = 0 };
 	if (currentKey['80'] == 2) { currentKey['80'] = 0 };
 	if (currentKey['186'] == 2) { currentKey['186'] = 0 };
-    //swordswing button (overworld)
-	currentKey['13'] = 0;
+
+	currentKey['37'] = 0;
+	currentKey['38'] = 0;
+	currentKey['39'] = 0;
+	currentKey['40'] = 0;
+	//action buttons
+	currentKey['83'] = 0;
+	currentKey['65'] = 0;
+    currentKey['68'] = 0;
+
 	g_frameNum = 0;
 }
 
@@ -115,10 +142,24 @@ const drawBG = () => {
 			drawSword();
 
 			//drawing Shine
-			imgx = (ShineAppearLocation[0] - (0-playerPosX))*PX_NUM;
-			imgy = (ShineAppearLocation[1] - (0-playerPosY))*PX_NUM;
+			drawNPCs();
+		break;
+		
+		case 'talk':
+				
+			imgx = playerPosX * PX_NUM;
+			imgy = playerPosY * PX_NUM;
 
-		    ctx.drawImage(shineAppearence, imgx-(14/2*PX_NUM), imgy-(21/2*PX_NUM), 14 * PX_NUM, 21*PX_NUM);
+			ctx.drawImage(background, imgx, imgy, 4109 * PX_NUM, 4110 * PX_NUM);
+
+			drawPlayer();
+			//drawShield();
+     
+			//drawing npcs
+			drawNPCs();
+			//writing the dialogue
+			ctx.drawImage(textBox, 0,0, 387*PX_NUM, 78*PX_NUM); 
+			writeWord(g_currentDialogue[0], 10*PX_NUM, 10*PX_NUM);
 		break;
 		
 		case 'surprise':
@@ -130,9 +171,10 @@ const drawBG = () => {
 				4109 * PX_NUM, 4110 * PX_NUM);
 
 			drawPlayer();
-			drawShield();
+			//drawShield();
 			ctx.drawImage(surprise, centerX-15*PX_NUM, centerY-30*PX_NUM, 15*PX_NUM, 15*PX_NUM);
 
+			drawNPCs();
 		break;
 		case 'fight':
 			ctx.save();
@@ -253,7 +295,7 @@ const mainLoop = () => {
 		let lastPlayerY = playerPosY;
 
 		if (g_BGstats === 'game') {
-			//left
+			// left
 			if (currentKey[76] === 1) {
 				playerPosX += speed;
 				direct = 3;
@@ -267,7 +309,7 @@ const mainLoop = () => {
 				g_frameNum += 1;
 				if (g_frameNum > 9 - 1) { g_frameNum = 0 }
 			}
-			//up
+			// up
 			if (currentKey[80] === 1) {
 				playerPosY += speed;
 				direct = 1;
@@ -281,7 +323,6 @@ const mainLoop = () => {
 				g_frameNum += 1;
 				if (g_frameNum > 9 - 1) { g_frameNum = 0 }
 			}
-
 		}
 
 		drawBG();
@@ -293,6 +334,10 @@ const mainLoop = () => {
 				playerPosX = lastPlayerX;
 				playerPosY = lastPlayerY;
 				drawBG();
+			}
+		} else if (g_BGstats === 'talk') {
+			if (g_currentDialogue === []) {
+				g_BGstats = 'game';
 			}
 		}
 	} else {
@@ -352,7 +397,7 @@ const writeWord = (word, posx, posy) => {
 }
 //loading time
 setTimeout(()=>{
-	g_BGstats = 'start?'
+	g_BGstats = 'start?';
 },10000)
 
 // key down and keyup listeners

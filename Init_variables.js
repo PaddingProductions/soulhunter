@@ -56,11 +56,8 @@ const swordswing = document.getElementById('swordswing left');
 const swordSpin = document.getElementById('sword spin');
 const jonnyWinPose = document.getElementById('jonny win pose');
 
-//Shine Images
-const shineAppearence = document.getElementById('Shine appearence');
-
-
-cursor = document.getElementById('cursor');
+const cursor = document.getElementById('cursor');
+const textBox = document.getElementById('text box');
 
 //letter
 var letterList = {
@@ -92,6 +89,10 @@ var letterList = {
 	'z': document.getElementById('letterZ'),
 
 	'/': document.getElementById('slash'),
+	',': document.getElementById('comma'),
+	'.': document.getElementById('period'),
+	'?': document.getElementById('question'),
+	
 
 	'0': document.getElementById('number0'),
 	'1': document.getElementById('number1'),
@@ -112,7 +113,7 @@ var letterList = {
 
 // VARIABLEs
 // the amount in pixels it moves every time you click it
-let speed = 3;
+let speed = 10;
 
 //num of px(on screen) in a px(on game)
 const PX_NUM = 3;
@@ -160,12 +161,10 @@ var currentKey = {
 	//swordswing button
 	// "s"
 	'83': false,
-	// select button (space)
-	'32': false,
 	//Y button, (w);
 	'119': false,
-	//A button, (w)
-	'100': false,
+	//A button, (d)
+	'68': false,
 
 };
 // x and y of the button you are on
@@ -302,20 +301,28 @@ g_buttonPos[0] = 'attack';
 g_buttonPos[1] = 'defend';
 g_buttonPos[2] = 'escape';
 
-//Additional characters
-
-//the location of where Shine will spawn. 
-const ShineAppearLocation = [1267,2807];
-
 // percentage chance of enemy appearence every second
-const enemyAppearencePerSecond = 1;
+const enemyAppearencePerSecond = 0;
 
 // dialogues of different people when you talk to them
 // every person has a dialogue array. when you talk to them, you will call the first string in the array
 // then when you press "S" you will go on to the next string.
 
-g_dialogue = {
-	'Shine': ['hmm? who are you?', 
-	  'you are a travler? i see, and you wish to me to aid you on your adventure?', 
-	  'very well, since i got nothing else to do, might as well be of use'],
+const npc_Shine = {
+	name: 'Shine',
+	init_x: 1267,
+	init_y: 2807,
+	stanceImage: document.getElementById('Shine appearence'),
+	dialogue:  [
+		'hmm? who are you?', 
+		'you are a travler? i see, and you wish to me to aid you on your adventure?', 
+		'very well, since i got nothing else to do, might as well be of use'
+	],
 }
+
+const g_NPC = [
+    npc_Shine, 
+];
+ 
+//the dialogue that is going to be used when in talking status
+let g_currentDialogue;

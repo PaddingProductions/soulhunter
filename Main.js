@@ -195,6 +195,16 @@ const drawSword = () => {
 	}
 };
 
+const drawNPCs = () => {
+    for (let i = 0; i<g_NPC.length; i++) {
+		npc = g_NPC[i];
+
+		imgx = (npc.init_x - (0-playerPosX))*PX_NUM;
+		imgy = (npc.init_y - (0-playerPosY))*PX_NUM;
+
+		ctx.drawImage(npc.stanceImage, imgx-(14/2*PX_NUM), imgy-(21/2*PX_NUM), 14 * PX_NUM, 21*PX_NUM);
+	}
+}
 // called every time after main loop is called
 // it will check the position of the player and if the position
 // color is red, then it means that you can't cross that part
