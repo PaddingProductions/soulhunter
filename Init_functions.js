@@ -58,6 +58,10 @@ const handleKeyUp = e => {
 	// if in diaogue and you press next ("s"key)
 	if (currentKey['83'] && g_BGstats === 'talk') {
 		g_currentDialogue.shift();
+		if (g_currentDialogue.length === 0) {
+			g_currentDialogue = undefined;
+			g_BGstats = 'game';
+		}
 	}
 	//resetting keys
 
@@ -335,9 +339,12 @@ const mainLoop = () => {
 				playerPosY = lastPlayerY;
 				drawBG();
 			}
-		} else if (g_BGstats === 'talk') {
-			if (g_currentDialogue === []) {
+		}  
+		if (g_BGstats === 'talk') {
+			console.log(g_currentDialogue);
+			if (g_currentDialogue === undefined) {
 				g_BGstats = 'game';
+				console.log("a'klsfjkasjdf;alsjdfklasj");
 			}
 		}
 	} else {
