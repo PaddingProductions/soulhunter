@@ -90,9 +90,11 @@ var letterList = {
 
 	'/': document.getElementById('slash'),
 	',': document.getElementById('comma'),
+	':': document.getElementById('colon'),
 	'.': document.getElementById('period'),
 	'?': document.getElementById('question'),
-	
+	';': document.getElementById('semi colon'),
+	"'": document.getElementById('single quote'),
 
 	'0': document.getElementById('number0'),
 	'1': document.getElementById('number1'),
@@ -313,10 +315,11 @@ const npc_Shine = {
 	init_x: 1267,
 	init_y: 2807,
 	stanceImage: document.getElementById('Shine appearence'),
+	job: 'recruit',
 	dialogue:  [
 		'hmm? who are you?', 
 		'you are a travler? i see, and you wish to me to aid you on your adventure?', 
-		'very well, since i got nothing else to do, might as well be of use'
+		'very well, since i got nothing else to do, might as well be of use.'
 	],
 }
 
@@ -326,3 +329,13 @@ const g_NPC = [
  
 //the dialogue that is going to be used when in talking status
 let g_currentDialogue;
+
+//the amount of characters in a line during dialogue state
+const g_letterWarpingSpace = 41;
+
+const tutorial = [
+	"press start to skip turoial",
+    "use the buttons: p l ; '  on the keyboard to move.",
+    "press s to swing sword. press d to talk.",
+    "good luck."
+]

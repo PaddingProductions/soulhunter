@@ -1,3 +1,4 @@
+// tells you if an element is in an array
 const is_in = (a, vector) => {
 	for (let i=0;i < vector.length; i++) {
 		if (vector[i] === a) {
@@ -43,8 +44,6 @@ const handleKeyUp = e => {
 			// note that the number is divided by PX_NUM
 			distanceX = 0-playerPosX - (npcX-g_screenSizeX/2/PX_NUM);
 			distanceY = 0-playerPosY - (npcY-g_screenSizeY/2/PX_NUM);
-			console.log(`x = ${distanceX}`)
-			console.log(`y = ${distanceY}`)
 
 			if (distanceX < 30 && distanceX > -30) {
 				if (distanceY <= 30 && distanceY >= -30) {
@@ -56,11 +55,13 @@ const handleKeyUp = e => {
 		}
 	}
 	// if in diaogue and you press next ("s"key)
-	if (currentKey['83'] && g_BGstats === 'talk') {
-		g_currentDialogue.shift();
-		if (g_currentDialogue.length === 0) {
-			g_currentDialogue = undefined;
-			g_BGstats = 'game';
+	if (currentKey['83']) {
+		if ( g_BGstats === 'talk' || g_BGstats === 'tutorial') {
+			g_currentDialogue.shift();
+			if (g_currentDialogue.length === 0) {
+				g_currentDialogue = undefined;
+				g_BGstats = 'game';
+			}
 		}
 	}
 	//resetting keys
@@ -130,7 +131,18 @@ const drawBG = () => {
 		case 'start?':
 			ctx.drawImage(titleScreen, 0, 0, g_screenSizeX, g_screenSizeY);
 		break;
+		case 'tutorial':
+		    ctx.fillStyle = '#f00';
+			ctx.fillRect(0,0, g_screenSizeX, g_screenSizeY);
 
+			const text = g_currentDialogue[0];
+			const textWidth = text.length * 8 * PX_NUM;
+			const textHeight = 8 * PX_NUM;
+			const x = g_screenSizeX / 2 - textWidth / 2;
+			const y = g_screenSizeY / 2 - textHeight / 2;
+
+			writeWord(text, x, y);
+		break;
 		case 'game':
 				
 			imgx = playerPosX * PX_NUM;
@@ -162,7 +174,7 @@ const drawBG = () => {
 			//drawing npcs
 			drawNPCs();
 			//writing the dialogue
-			ctx.drawImage(textBox, 0,0, 387*PX_NUM, 78*PX_NUM); 
+			ctx.drawImage(textBox, 10,0, 387*PX_NUM, 78*PX_NUM); 
 			writeWord(g_currentDialogue[0], 10*PX_NUM, 10*PX_NUM);
 		break;
 		
@@ -212,7 +224,6 @@ const drawBG = () => {
 			ctx.restore()
 		break;
 		case 'jonny attack':
-		    console.log("step three check");
 			drawCharacterStats(['jonny'])
 			drawCursor();
 			drawCharacters(['jonny']);
@@ -225,7 +236,6 @@ const drawBG = () => {
 		break;
 
 		case 'jonny action':
-			console.log("step three check");
 			drawButtons(playerStatus['jonny']['abilities']);
 			drawCharacterStats(['jonny']);
 			drawCursor();
@@ -268,8 +278,6 @@ const drawBG = () => {
 			const action = g_BGstats.split(" ")[1];
 
 			if (is_in(attacker, playerStatus['party']) === false && action === 'attack') {
-				console.log("step three check (enemy)");
-
 				writeWord('hyaaaaaaa', 300, 300);
 
 				drawCharacterStats(['jonny'])
@@ -298,7 +306,7 @@ const mainLoop = () => {
 		let lastPlayerX = playerPosX;
 		let lastPlayerY = playerPosY;
 
-		if (g_BGstats === 'game') {
+        if (g_BGstats === 'game') {
 			// left
 			if (currentKey[76] === 1) {
 				playerPosX += speed;
@@ -341,10 +349,8 @@ const mainLoop = () => {
 			}
 		}  
 		if (g_BGstats === 'talk') {
-			console.log(g_currentDialogue);
 			if (g_currentDialogue === undefined) {
 				g_BGstats = 'game';
-				console.log("a'klsfjkasjdf;alsjdfklasj");
 			}
 		}
 	} else {
@@ -362,7 +368,6 @@ const mainLoop = () => {
 		}
 		// if the turn has ended and needs to genrate a new order
 		if (g_turnList.length === 0) {
-			console.log("step one check");
 			//for now it will be a player 60 and enemy 40 chance.
 			// this is the percentage
 			let Num = Math.floor(Math.random()*100);
@@ -392,19 +397,35 @@ const mainLoop = () => {
 	}
 };
 
-const writeWord = (word, posx, posy) => {
-	for (i = 0; i < word.length; i++) {
-		var letter = word.charAt(i);
-		if (letter != ' ') {
-			imgx = posx + (8 * i) * PX_NUM;
-			imgy = posy;
+const writeWord = (string, posx, posy) => {
+	let line = 1;
+	let whenSwicthed = 0;
+	for (i = 0; i < string.length; i++) {
+		var letter = string.charAt(i);
+
+		if (letter !== ' ') {
+
+			imgx = (posx + (8 * i) * PX_NUM) - ((8*whenSwicthed)*(line-1)*PX_NUM);
+			imgy = posy+(12*(line-1))*PX_NUM;
+			
 			ctx.drawImage(letterList[letter], imgx, imgy, 8 * PX_NUM, 8 * PX_NUM);
+		} else {
+			var splitedString = (' ' + string).slice(1);
+
+			splitedString = splitedString.slice(i);
+
+			splitedString = splitedString.split(' ');
+			if (i+splitedString[0] > g_letterWarpingSpace*line && line === 1) {
+				line += 1;
+				whenSwicthed = i;
+			}
 		}
 	}
 }
 //loading time
 setTimeout(()=>{
-	g_BGstats = 'start?';
+	g_BGstats = 'tutorial';
+	g_currentDialogue = tutorial;
 },10000)
 
 // key down and keyup listeners
