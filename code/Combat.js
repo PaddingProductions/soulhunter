@@ -1,6 +1,7 @@
 const endBattle = () => {
 	if ((1200-disapearFrame*30)/2 < 0) {
 		g_BGstats = 'game';
+		return;
 	}
 	ctx.beginPath();
 	ctx.arc(600,375,(1200-disapearFrame*30)/2,0, Math.PI*2, true);
@@ -9,19 +10,27 @@ const endBattle = () => {
 };
 
 const drawCharacters = (characters) => {
-	imgx = 800;
-	imgy = 300;
+	let imgx = 800;
+	let imgy = 300;
+
 	for (let i = 0; i < characters.length; i++) {
+
+		imgy += i*100;
+		const character = g_playerStatus[g_playerStatus['party'][i]];
 
 	    //if you won the battle.
 		if (g_BGstats === 'win') {
-			ctx.drawImage(jonnyWinPose, imgx, imgy, 16 * PX_NUM, 24 * PX_NUM);
+			img = character['win pose'];
+
+			ctx.drawImage(img, imgx, imgy, 16 * PX_NUM, 24 * PX_NUM);
 
 			const degree = swordSpinFrame / 8 * 360;
 
 			// moving the imge to the center of the hand
 			ctx.save();
 		    {
+				img = character['sword spin'];
+
 				ctx.translate(imgx+45, imgy-PX_NUM);
 				ctx.rotate(degree / 180 * Math.PI);
 				ctx.drawImage(swordSpin, -9*PX_NUM, -18*PX_NUM, 16*PX_NUM, 16*PX_NUM);
@@ -29,45 +38,52 @@ const drawCharacters = (characters) => {
 			ctx.restore();
 			// if the player is attacking	
 
-		} else if (playerStatus[playerStatus['party'][i]]['status'] === 'attack' && swordFrame !== -1) {
+		} else if (character['status'] === 'attack' && swordFrame !== -1) {
 			imgx = 600;
+			img = character['sword swing'];
+			console.log(character)
+
 			//making the player looks like he is swinging his sword
 			if (swordFrame < 5) {
-				ctx.drawImage(swordswing, 121 - (23 + 1) * (swordFrame + 1),
+				ctx.drawImage(img, 121 - (23 + 1) * (swordFrame + 1),
 					1, 23, 23, imgx, imgy, 23 * PX_NUM, 23 * PX_NUM);
 			} else {
-				ctx.drawImage(swordswing , 1, 1, 23, 23, imgx, imgy, 23 * PX_NUM, 23 * PX_NUM);
+				ctx.drawImage(img , 1, 1, 23, 23, imgx, imgy, 23 * PX_NUM, 23 * PX_NUM);
 			}
 			// drawing the sword
+
+			img = character['sword'];
 			imgx -= 16 * PX_NUM;
 			imgy += 10 * PX_NUM;
+			
 			ctx.drawImage(sword, 1, ((16 * swordFrame) + (1 * (swordFrame + 1))),
 				16, 16, imgx, imgy, 16 * PX_NUM, 16 * PX_NUM);
 			swordFrame += 1;
-
-			return;
 			// if he is being hit by the enemy
 
 
-		} else if (playerStatus[playerStatus['party'][i]] === 'hit') {
+		} else if (character['status'] === 'hit') {
+			img = character['stance'][0];
+
 			const random_num = Math.floor(Math.random()*10);
 			if (Math.random() > 0.5) {
 				imgx += random_num;
 			} else {
 				imgx -= random_num;
 			}
-			ctx.drawImage(stand_jonny, imgx, imgy, 16 * PX_NUM, 23 * PX_NUM);
+			ctx.drawImage(img, imgx, imgy, 16 * PX_NUM, 23 * PX_NUM);
 			ctx.drawImage(shield, 0, 0, 6, 18, imgx - (10 * PX_NUM), imgy + (5 * PX_NUM)
-				, 8 * PX_NUM, 16 * PX_NUM);			
-			return;
-
+				, 8 * PX_NUM, 16 * PX_NUM);	
 			// other situations
 
 
 		} else {
-			
+			const sizex = character['stance'][1];
+			const sizey = character['stance'][2];
+			img = character['stance'][0];
+
 			//when it's waiting for his or her turn
-			ctx.drawImage(stand_jonny, imgx, imgy, 16 * (PX_NUM), 23 * (PX_NUM));
+			ctx.drawImage(img, imgx, imgy, sizex * PX_NUM, sizey * PX_NUM);
 			ctx.drawImage(shield, 0, 0, 6, 18, imgx - (10 * PX_NUM), imgy + (5 * PX_NUM)
 				, 8 * PX_NUM, 16 * PX_NUM);
 		}
@@ -125,7 +141,6 @@ const drawEnemies = (enemies) => {
 			default:
 
 				//getting the image of the enemy
-				console.log(enemies[i]['NAME']);
 				img = enemyImages[enemies[i]['NAME']];
 				ctx.drawImage(img, imgx, imgy, 32 * PX_NUM, 30 * PX_NUM);
 			break;
@@ -179,7 +194,6 @@ const drawCharacterStats = (words) => {
 		ctx.fillStyle = '#bcbcbc';
 		ctx.rect(imgx, imgy, 960, 50);
 		ctx.stroke();
-        console.log(words[i]);
 		//writing the name of the fighter
 		writeWord(words[i], imgx + 10, imgy + 10);
 
@@ -187,23 +201,22 @@ const drawCharacterStats = (words) => {
 		//writing the HP of the character and the full hp
 		imgx = imgx + 150;
 		imgy = imgy;
-		HPString = `hp ${playerStatus[words[i]]['HP']} / ${playerStatus[words[i]]['FULL HP']}`;
+		HPString = `hp ${g_playerStatus[words[i]]['HP']} / ${g_playerStatus[words[i]]['FULL HP']}`;
 
 		writeWord(HPString, imgx, imgy);
 
 		//drawing mana/ full mana
-		imgx = imgx + 150;
+		imgx = imgx + 100;
 		imgy = imgy;
-		HPString = `mp ${playerStatus[words[i]]['MP']} / ${playerStatus[words[i]]['FULL MP']}`;
+		HPString = `stm ${g_playerStatus[words[i]]['STM']} / ${g_playerStatus[words[i]]['FULL STM']}`;
 
 		writeWord(HPString, imgx, imgy);
 	}
 }
 
 const turnManagement = () =>{
-	console.log("step two check");
 	// if it is the player's turn, then draw the action buttons.
-	if (is_in(g_turnList[0]['NAME'], playerStatus['party'])) {
+	if (is_in(g_turnList[0]['NAME'], g_playerStatus['party'])) {
   
 		g_BGstats = `${g_turnList[0]['NAME']} action`;
 
@@ -212,7 +225,7 @@ const turnManagement = () =>{
 		g_BGstats = `${g_turnList[0]['NAME']} attack`;
 		for (i = 0; i < enemy.length; i++) {
 			if (g_turnList[0] === enemy[i]) {
-				actionManagement(enemy[i]['AI'](), enemy[i], playerStatus['jonny']);
+				actionManagement(enemy[i]['AI'](), enemy[i], g_playerStatus['jonny']);
 			}
 		}
 	}
@@ -223,14 +236,16 @@ const actionManagement = (action, attacker, victim) => {
 	switch (action) {
 		//if they chose to attack
 		case 'attack': 
+
 		    attacker['status'] = action;
 		    const ATK = attacker['ATK'];
 			g_DMG = Math.floor((Math.random() *(ATK + 0.99)) + (ATK*5));
 			victim['HP'] -= g_DMG;
-			//if you defeated the enemy
-			if (attacker === playerStatus['jonny']) g_BGstats = 'jonny attack';
 
-			if (victim['HP'] <= 0 && attacker === playerStatus['jonny']) {
+			//if you defeated the enemy
+			if (attacker === g_playerStatus['jonny']) g_BGstats = 'jonny attack';
+
+			if (victim['HP'] <= 0 && attacker === g_playerStatus['jonny']) {
 				// if you win you gotta let it looks like you killed it not instantly kaboom!
 				setTimeout(()=> {
 					victim['status'] = 'death';
@@ -244,7 +259,6 @@ const actionManagement = (action, attacker, victim) => {
 					}
 					// if there are no enemy left on the battle field
 					if (enemy.length === 0) {
-						console.log("a;kldfja;lskjdfa;slkdjfa;sdlfjka;ldsfjk")
         	       		g_BGstats = 'win';
 					} 
 				}, 2000);

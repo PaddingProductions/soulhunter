@@ -205,19 +205,19 @@ let enemyNum = 1;
 
 let swordFrame = 0;
 
-let playerStatus = {
-	'party': ['jonny'],
+let g_playerStatus = {
+	'party': ['jonny','shine'],
 	'jonny': {
 		//positions on screen
 		'posx': 0,
 		'posy': 0,
 		//stats
 		'NAME': 'jonny',
-		'HP': 350,
-		'FULL HP': 350,
-		'MP': 0,
-		'FULL MP': 0,
-		'ATK': 10,
+		'HP': 9999,
+		'FULL HP': 9999,
+		'STM': 999,
+		'FULL STM': 999,
+		'ATK': 9999,
 		//Chance of getting to attack first in a turn.
 		'SPD': 3,
 		//critical rate
@@ -226,11 +226,44 @@ let playerStatus = {
 		'abilities': ['attack','defend','escape'],
 		//the status it is on, if not, then set to none.
 		'status': null,
+		//images
+		'stance': [document.getElementById('player jonny'), 16, 23],
+		'sword': document.getElementById('sword left'),
+		'sword swing': document.getElementById('swordswing left'),
+		'sword spin': document.getElementById('sword spin'),
+		'win pose': document.getElementById('jonny win pose'),
+
+	},
+	'shine': {
+		//positions on screen
+		'posx': 0,
+		'posy': 0,
+		//stats
+		'NAME': 'shine',
+		'HP': 9999,
+		'FULL HP': 9999,
+		'STM': 999,
+		'FULL STM': 999,
+		'ATK': 9999,
+		//Chance of getting to attack first in a turn.
+		'SPD': 8,
+		//critical rate
+		'CRT': null,
+		//the moves Jonny can do
+		'abilities': ['attack','magic','escape'],
+		//the status it is on, if not, then set to none.
+		'status': null,
+		//images
+		'stance': [document.getElementById('Shine stance'), 36, 27],
+		'sword': document.getElementById('brush left'),
+		'sword swing': document.getElementById('brushswing left'),
+		'sword spin': document.getElementById('brush spin'),
+		'win pose': document.getElementById('shine win pose'),
 	}
 }
 
 //stats of all enemies in the game
-const bestiary = {
+const g_bestiary = {
 	'swordsmen': {
 		//positions on screen
 		'posx': 0,
@@ -304,7 +337,7 @@ g_buttonPos[1] = 'defend';
 g_buttonPos[2] = 'escape';
 
 // percentage chance of enemy appearence every second
-const enemyAppearencePerSecond = 0;
+const enemyAppearencePerSecond = 10;
 
 // dialogues of different people when you talk to them
 // every person has a dialogue array. when you talk to them, you will call the first string in the array
@@ -329,9 +362,6 @@ const g_NPC = [
  
 //the dialogue that is going to be used when in talking status
 let g_currentDialogue;
-
-//the amount of characters in a line during dialogue state
-const g_letterWarpingSpace = 41;
 
 const tutorial = [
 	"press start to skip turoial",

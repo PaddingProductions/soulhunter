@@ -11,8 +11,8 @@ const startBattle = () => {
 	} else if (enemy === undefined) {
 		///setting up enemy when the animation is over.
 		enemy = [];
-		enemy.push(bestiary['swordsmen']);
-		enemy.push(bestiary['spearsmen']);
+		enemy.push(g_bestiary['swordsmen']);
+		enemy.push(g_bestiary['spearsmen']);
 	}	
 }
 
@@ -76,7 +76,7 @@ const drawPlayer = () => {
 	}
 	// down
 	if (direct === 2) {
-		imgx = centerX - 19 * PX_NUM / 2;
+    imgx = centerX - 19 * PX_NUM / 2;
 		imgy = centerY - 30 * PX_NUM / 2;
 		//width * frame num + 1(gap between the frames) * 
 		// frame num + 1 (becuase if the frame num = 0 it's

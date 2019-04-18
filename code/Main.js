@@ -24,11 +24,12 @@ const handleKeyUp = e => {
 	
 
 	//if they select a move to use
-	if (currentKey['83'] && g_BGstats === 'jonny action') {
+
+	if (currentKey['83'] && g_BGstats.split(" ")[1] === 'action') {
 		g_BGstats = 'select target';
 		g_selectedAction = g_buttonPos[g_mousePos[1]]
 	} else if (currentKey['83'] && g_BGstats === 'select target'){
-		actionManagement(g_selectedAction, playerStatus['jonny'], enemy[g_mousePos[1]]);
+		actionManagement(g_selectedAction, g_turnList[0], enemy[g_mousePos[1]]);
 	}
 
 	//if the mouse is outside the button selection list
@@ -131,6 +132,7 @@ const drawBG = () => {
 		case 'start?':
 			ctx.drawImage(titleScreen, 0, 0, g_screenSizeX, g_screenSizeY);
 		break;
+
 		case 'tutorial':
 		    ctx.fillStyle = '#f00';
 			ctx.fillRect(0,0, g_screenSizeX, g_screenSizeY);
@@ -141,8 +143,9 @@ const drawBG = () => {
 			const x = g_screenSizeX / 2 - textWidth / 2;
 			const y = g_screenSizeY / 2 - textHeight / 2;
 
-			writeWord(text, x, y);
+			writeWord(text, x, y, 'centered');
 		break;
+
 		case 'game':
 				
 			imgx = playerPosX * PX_NUM;
@@ -175,7 +178,7 @@ const drawBG = () => {
 			drawNPCs();
 			//writing the dialogue
 			ctx.drawImage(textBox, 10,0, 387*PX_NUM, 78*PX_NUM); 
-			writeWord(g_currentDialogue[0], 10*PX_NUM, 10*PX_NUM);
+			writeWord(g_currentDialogue[0], 10*PX_NUM, 10*PX_NUM, g_screenSizeX-10*PX_NUM);
 		break;
 		
 		case 'surprise':
@@ -192,6 +195,7 @@ const drawBG = () => {
 
 			drawNPCs();
 		break;
+
 		case 'fight':
 			ctx.save();
 			{
@@ -223,38 +227,19 @@ const drawBG = () => {
 			}
 			ctx.restore()
 		break;
-		case 'jonny attack':
-			drawCharacterStats(['jonny'])
-			drawCursor();
-			drawCharacters(['jonny']);
-			drawEnemies(enemy)
-			// if it's player's trun and is attacking.
-			if (g_DMG !== undefined && g_DMG !== null) {
-				writeWord(`${g_DMG}`, 200 ,200);
-			}
-
-		break;
-
-		case 'jonny action':
-			drawButtons(playerStatus['jonny']['abilities']);
-			drawCharacterStats(['jonny']);
-			drawCursor();
-			drawCharacters(['jonny']);
-			drawEnemies(enemy);
-		break;
 
 		case 'select target':
-			drawCharacterStats(['jonny'])
-			drawCharacters(['jonny']);
+			drawCharacterStats(g_playerStatus['party'])
+			drawCharacters(g_playerStatus['party']);
 			drawEnemies(enemy);
 			drawCursor();
 			
 		break;
 
 		case 'win':
-			drawCharacterStats(['jonny'])
+			drawCharacterStats(g_playerStatus['party'])
 			writeWord('yeeeeeetus', 200 ,200);
-			drawCharacters(['jonny']);
+			drawCharacters(g_playerStatus['party']);
 
 		break;
 		
@@ -266,32 +251,53 @@ const drawBG = () => {
 				ctx.fillStyle = '#7c7c7c'
 				ctx.fillRect(0,0, g_screenSizeX, g_screenSizeY)
 
-				drawCharacterStats(['jonny']);
-				drawCharacters(['jonny']);
+				drawCharacterStats(g_playerStatus['party']);
+				drawCharacters(g_playerStatus['party']);
 			}
 			ctx.restore()
 		break;
 		
 		default:
-			//if it's enemy attack
 			const attacker = g_BGstats.split(" ")[0];
 			const action = g_BGstats.split(" ")[1];
 
-			if (is_in(attacker, playerStatus['party']) === false && action === 'attack') {
+				//if it's enemy attack
+			if (is_in(attacker, g_playerStatus['party']) === false && action === 'attack') {
 				writeWord('hyaaaaaaa', 300, 300);
 
-				drawCharacterStats(['jonny'])
+				drawCharacterStats(g_playerStatus['party'])
 				drawCursor();
-				drawCharacters(['jonny']);
+				drawCharacters(g_playerStatus['party']);
 				drawEnemies(enemy);
 
 				//damage delt
 				if (g_DMG !== undefined && g_DMG !== null) {
 					writeWord(`${g_DMG}`, 200 ,200);
 				}
+				//player action
+			} else if (is_in(attacker, g_playerStatus['party']) && action === 'action') {
+
+				drawButtons(g_playerStatus[g_turnList[0]['NAME']]['abilities']);
+				drawCharacterStats(g_playerStatus['party']);
+				drawCursor();
+				drawCharacters(g_playerStatus['party']);
+				drawEnemies(enemy);
+
+				//player attack
+			} else if (is_in(attacker, g_playerStatus['party']) && action === 'attack') {
+
+				drawCharacterStats(g_playerStatus['party']);
+				drawCursor();
+				drawCharacters(g_playerStatus['party']);
+				drawEnemies(enemy)
+
+				if (g_DMG !== undefined && g_DMG !== null) {
+					writeWord(`${g_DMG}`, 200 ,200);
+				}
 			} else {
 				// if something goes wrong
 				console.log('!!! SOMETHING WRONG !!!');
+				console.log(g_BGstats)
 			}
 		break;
 	}
@@ -373,15 +379,17 @@ const mainLoop = () => {
 			let Num = Math.floor(Math.random()*100);
 			// change the 60 into the formula 
 			if (Num <= 50) {
-				g_turnList.push(playerStatus['jonny']);
+				g_turnList.push(g_playerStatus['jonny']);
 				for (let i = 0; i < enemy.length; i++) {
 					g_turnList.push(enemy[i]);
 				}
+				g_turnList.push(g_playerStatus['shine']);
 			} else {
+				g_turnList.push(g_playerStatus['shine']);
 				for (let i = 0; i < enemy.length; i++) {
 					g_turnList.push(enemy[i]);
 				}			
-				g_turnList.push(playerStatus['jonny']);
+				g_turnList.push(g_playerStatus['jonny']);
 			}
 		}
 		// if it is time to do the next turn and you didn't win
@@ -397,17 +405,31 @@ const mainLoop = () => {
 	}
 };
 
-const writeWord = (string, posx, posy) => {
+const writeWord = (string, posx, posy, wrapPosx, wrapStyle) => {
+
+	if (wrapPosx === undefined) wrapPosx = 1200;
+	if (wrapStyle === undefined) wrapStyle = 'standard';
+
 	let line = 1;
 	let whenSwicthed = 0;
+    let wrapPos = Math.floor((wrapPosx-posx)/8);
+
 	for (i = 0; i < string.length; i++) {
 		var letter = string.charAt(i);
 
 		if (letter !== ' ') {
+            if (wrapStyle === 'standard') {
 
-			imgx = (posx + (8 * i) * PX_NUM) - ((8*whenSwicthed)*(line-1)*PX_NUM);
-			imgy = posy+(12*(line-1))*PX_NUM;
-			
+				imgx = (posx + (8 * i) * PX_NUM) - ((8*whenSwicthed)*(line-1)*PX_NUM);
+				imgy = posy+(12*(line-1))*PX_NUM;
+
+			} else if (wrapStyle === 'centered') {
+
+				const textWidth = string.length * 8 * PX_NUM;
+
+				imgx = g_screenSizeX / 2 - textWidth / 2;
+				imgy = g_screenSizeY / 2 - textHeight / 2;	
+			}
 			ctx.drawImage(letterList[letter], imgx, imgy, 8 * PX_NUM, 8 * PX_NUM);
 		} else {
 			var splitedString = (' ' + string).slice(1);
@@ -415,7 +437,7 @@ const writeWord = (string, posx, posy) => {
 			splitedString = splitedString.slice(i);
 
 			splitedString = splitedString.split(' ');
-			if (i+splitedString[0] > g_letterWarpingSpace*line && line === 1) {
+			if (i+splitedString[0] > wrapPos*line && line === 1) {
 				line += 1;
 				whenSwicthed = i;
 			}
