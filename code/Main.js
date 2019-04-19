@@ -86,7 +86,7 @@ const handleKeyUp = e => {
 	currentKey['83'] = 0;
 	currentKey['65'] = 0;
     currentKey['68'] = 0;
-
+	currentKey['13'] = 0;
 	g_frameNum = 0;
 }
 
@@ -97,11 +97,15 @@ const handleKeyDown = e => {
 	if (e.keyCode === 83)
 		g_swordFrame = 0;
 
-	if (g_BGstats === 'start?') {
-		if (currentKey[13] === 1) {
+	if (currentKey[13] === 1) {
+		if (g_BGstats === 'start?') {
+			g_BGstats = 'tutorial';
+			g_currentDialogue = tutorial;
+		} else if (g_BGstats === 'tutorial') {
 			g_BGstats = 'game';
-		}
+		}	
 	}
+	
 };
 
 //draws EVERY THING
@@ -446,8 +450,7 @@ const writeWord = (string, posx, posy, wrapPosx, wrapStyle) => {
 }
 //loading time
 setTimeout(()=>{
-	g_BGstats = 'tutorial';
-	g_currentDialogue = tutorial;
+	g_BGstats = 'start?';
 },10000)
 
 // key down and keyup listeners
