@@ -1,6 +1,7 @@
 const endBattle = () => {
 	if ((1200-disapearFrame*30)/2 < 0) {
 		g_BGstats = 'game';
+		enemy = undefined;
 		return;
 	}
 	ctx.beginPath();
@@ -10,19 +11,19 @@ const endBattle = () => {
 };
 
 const drawCharacters = (characters) => {
-	let imgx = 800;
-	let imgy = 300;
+
 
 	for (let i = 0; i < characters.length; i++) {
-
-		imgy += i*100;
+		let imgx = 800;
+		let imgy = 300+100*i;
+	
 		const character = g_playerStatus[g_playerStatus['party'][i]];
 
 	    //if you won the battle.
 		if (g_BGstats === 'win') {
 			img = character['win pose'];
 
-			ctx.drawImage(img, imgx, imgy, 16 * PX_NUM, 24 * PX_NUM);
+			ctx.drawImage(img[0], imgx, imgy, img[1] * PX_NUM, img[2] * PX_NUM);
 
 			const degree = swordSpinFrame / 8 * 360;
 
@@ -33,7 +34,7 @@ const drawCharacters = (characters) => {
 
 				ctx.translate(imgx+45, imgy-PX_NUM);
 				ctx.rotate(degree / 180 * Math.PI);
-				ctx.drawImage(swordSpin, -9*PX_NUM, -18*PX_NUM, 16*PX_NUM, 16*PX_NUM);
+				ctx.drawImage(img[0], -9*PX_NUM, -18*PX_NUM, img[1]*PX_NUM, img[2]*PX_NUM);
 			}
 			ctx.restore();
 			// if the player is attacking	
@@ -41,14 +42,13 @@ const drawCharacters = (characters) => {
 		} else if (character['status'] === 'attack' && swordFrame !== -1) {
 			imgx = 600;
 			img = character['sword swing'];
-			console.log(character)
 
 			//making the player looks like he is swinging his sword
 			if (swordFrame < 5) {
-				ctx.drawImage(img, 121 - (23 + 1) * (swordFrame + 1),
+				ctx.drawImage(img[0], img[1] - (23 + 1) * (swordFrame + 1),
 					1, 23, 23, imgx, imgy, 23 * PX_NUM, 23 * PX_NUM);
 			} else {
-				ctx.drawImage(img , 1, 1, 23, 23, imgx, imgy, 23 * PX_NUM, 23 * PX_NUM);
+				ctx.drawImage(img[0] , 1, 1, 23, 23, imgx, imgy, 23 * PX_NUM, 23 * PX_NUM);
 			}
 			// drawing the sword
 
@@ -56,14 +56,14 @@ const drawCharacters = (characters) => {
 			imgx -= 16 * PX_NUM;
 			imgy += 10 * PX_NUM;
 			
-			ctx.drawImage(sword, 1, ((16 * swordFrame) + (1 * (swordFrame + 1))),
+			ctx.drawImage(img[0], 1, ((16 * swordFrame) + (1 * (swordFrame + 1))),
 				16, 16, imgx, imgy, 16 * PX_NUM, 16 * PX_NUM);
 			swordFrame += 1;
 			// if he is being hit by the enemy
 
 
 		} else if (character['status'] === 'hit') {
-			img = character['stance'][0];
+			img = character['stance'];
 
 			const random_num = Math.floor(Math.random()*10);
 			if (Math.random() > 0.5) {
@@ -71,19 +71,17 @@ const drawCharacters = (characters) => {
 			} else {
 				imgx -= random_num;
 			}
-			ctx.drawImage(img, imgx, imgy, 16 * PX_NUM, 23 * PX_NUM);
+			ctx.drawImage(img[0], imgx, imgy, img[1] * PX_NUM, img[2] * PX_NUM);
 			ctx.drawImage(shield, 0, 0, 6, 18, imgx - (10 * PX_NUM), imgy + (5 * PX_NUM)
 				, 8 * PX_NUM, 16 * PX_NUM);	
 			// other situations
 
 
 		} else {
-			const sizex = character['stance'][1];
-			const sizey = character['stance'][2];
-			img = character['stance'][0];
+			img = character['stance'];
 
 			//when it's waiting for his or her turn
-			ctx.drawImage(img, imgx, imgy, sizex * PX_NUM, sizey * PX_NUM);
+			ctx.drawImage(img[0], imgx, imgy, img[1] * PX_NUM, img[2] * PX_NUM);
 			ctx.drawImage(shield, 0, 0, 6, 18, imgx - (10 * PX_NUM), imgy + (5 * PX_NUM)
 				, 8 * PX_NUM, 16 * PX_NUM);
 		}

@@ -20,8 +20,9 @@ const handleKeyUp = e => {
 	if (currentKey['39']) g_mousePos[0] += 1;
 
 	//if the player presses B
-    if (currentKey['65'] && g_BGstats === 'select target') g_BGstats = 'jonny action';	
-	
+    if (currentKey['65'] && g_BGstats === 'select target') {
+		g_BGstats = 'jonny action';	
+	}
 
 	//if they select a move to use
 
@@ -64,6 +65,10 @@ const handleKeyUp = e => {
 				g_BGstats = 'game';
 			}
 		}
+	}
+	// if you press 'W', you go to menu
+	if (currentKey['119']) {
+		g_BGstats = 'menu';
 	}
 	//resetting keys
 
@@ -185,6 +190,21 @@ const drawBG = () => {
 			writeWord(g_currentDialogue[0], 10*PX_NUM, 10*PX_NUM, g_screenSizeX-10*PX_NUM);
 		break;
 		
+		case 'menu':
+
+			imgx = 30;
+			imgy = 30;
+			// for every charater 
+			for (let i = 0; i < g_playerStatus['party'].length; i++) {
+				const charater = g_playerStatus[g_playerStatus['party'][i]];
+				imgx += 220 * i;
+				//profile pic. can't afford to draw a new one so it's going to be the vitory pose.
+				ctx.drawImage(charater['win pose'][0], imgx, imgy, charater['win pose'][1]*PX_NUM,
+				 charater['win pose'][2]*PX_NUM);
+				
+			}
+		break;
+
 		case 'surprise':
 							
 			imgx = playerPosX * PX_NUM;

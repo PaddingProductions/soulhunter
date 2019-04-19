@@ -169,6 +169,7 @@ var currentKey = {
 	'68': false,
 
 };
+
 // x and y of the button you are on
 let g_mousePos = [0, 0];
 
@@ -228,10 +229,10 @@ let g_playerStatus = {
 		'status': null,
 		//images
 		'stance': [document.getElementById('player jonny'), 16, 23],
-		'sword': document.getElementById('sword left'),
-		'sword swing': document.getElementById('swordswing left'),
-		'sword spin': document.getElementById('sword spin'),
-		'win pose': document.getElementById('jonny win pose'),
+		'sword': [document.getElementById('sword left'), 18, 120],
+		'sword swing': [document.getElementById('swordswing left'), 121, 25],
+		'sword spin': [document.getElementById('sword spin'), 18, 18],
+		'win pose': [document.getElementById('jonny win pose'), 16, 24],
 
 	},
 	'shine': {
@@ -255,10 +256,10 @@ let g_playerStatus = {
 		'status': null,
 		//images
 		'stance': [document.getElementById('Shine stance'), 36, 27],
-		'sword': document.getElementById('brush left'),
-		'sword swing': document.getElementById('brushswing left'),
-		'sword spin': document.getElementById('brush spin'),
-		'win pose': document.getElementById('shine win pose'),
+		'sword': [document.getElementById('brush left'), 18, 120],
+		'sword swing': [document.getElementById('brushswing left'), 121, 25],
+		'sword spin': [document.getElementById('brush spin'), 18, 18],
+		'win pose': [document.getElementById('shine win pose'), 16, 24],
 	}
 }
 
@@ -337,7 +338,7 @@ g_buttonPos[1] = 'defend';
 g_buttonPos[2] = 'escape';
 
 // percentage chance of enemy appearence every second
-const enemyAppearencePerSecond = 10;
+const enemyAppearencePerSecond = 99;
 
 // dialogues of different people when you talk to them
 // every person has a dialogue array. when you talk to them, you will call the first string in the array
