@@ -19,9 +19,14 @@ const handleKeyUp = e => {
 	if (currentKey['38']) g_mousePos[1] -= 1;
 	if (currentKey['39']) g_mousePos[0] += 1;
 
-	//if the player presses B
-    if (currentKey['65'] && g_BGstats === 'select target') {
-		g_BGstats = 'jonny action';	
+	//if the player presses B, return to move selection.
+	// or if you press "b" when you are on menu.
+    if (currentKey['68']) {
+		if (g_BGstats === 'select target') {
+			g_BGstats = 'jonny action';	
+		} else if (g_BGstats === 'menu') {
+			g_BGstats = 'game';
+		}
 	}
 
 	//if they select a move to use
@@ -56,7 +61,7 @@ const handleKeyUp = e => {
 			}
 		}
 	}
-	// if in diaogue and you press next ("s"key)
+	// if in diaogue and you press next ("s"key) 
 	if (currentKey['83']) {
 		if ( g_BGstats === 'talk' || g_BGstats === 'tutorial') {
 			g_currentDialogue.shift();
@@ -67,7 +72,8 @@ const handleKeyUp = e => {
 		}
 	}
 	// if you press 'W', you go to menu
-	if (currentKey['119']) {
+	if (currentKey['87']) {
+		console.log("hello there, I would like to see the MENU PLEASE");
 		g_BGstats = 'menu';
 	}
 	//resetting keys
@@ -92,6 +98,7 @@ const handleKeyUp = e => {
 	currentKey['65'] = 0;
     currentKey['68'] = 0;
 	currentKey['13'] = 0;
+	currentKey['87'] = 0;
 	g_frameNum = 0;
 }
 
@@ -192,15 +199,22 @@ const drawBG = () => {
 		
 		case 'menu':
 
-			imgx = 30;
-			imgy = 30;
 			// for every charater 
 			for (let i = 0; i < g_playerStatus['party'].length; i++) {
+
 				const charater = g_playerStatus[g_playerStatus['party'][i]];
-				imgx += 220 * i;
+				
+				imgx = 50;
+				imgy = 50 + 200 * i;
+
 				//profile pic. can't afford to draw a new one so it's going to be the vitory pose.
 				ctx.drawImage(charater['win pose'][0], imgx, imgy, charater['win pose'][1]*PX_NUM,
-				 charater['win pose'][2]*PX_NUM);
+				  charater['win pose'][2]*PX_NUM);
+
+				//writing stats
+				writeWord(charater['NAME'], imgx + 60, imgy);
+				writeWord(`hp ${charater['HP']} / ${charater['FULL HP']}`, imgx + 60, imgy + 78);
+				writeWord(`stm ${charater['STM']} / ${charater['FULL STM']}`, imgx + 200, imgy);
 				
 			}
 		break;
@@ -333,10 +347,13 @@ const drawBG = () => {
 const mainLoop = () => {
 	if (enemy === undefined) {
 
+
 		let lastPlayerX = playerPosX;
 		let lastPlayerY = playerPosY;
 
         if (g_BGstats === 'game') {
+			appearFrame = 0;
+			disapearFrame = 0;
 			// left
 			if (currentKey[76] === 1) {
 				playerPosX += speed;

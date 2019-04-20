@@ -164,7 +164,7 @@ var currentKey = {
 	// "s"
 	'83': false,
 	//Y button, (w);
-	'119': false,
+	'87': false,
 	//A button, (d)
 	'68': false,
 
@@ -338,7 +338,7 @@ g_buttonPos[1] = 'defend';
 g_buttonPos[2] = 'escape';
 
 // percentage chance of enemy appearence every second
-const enemyAppearencePerSecond = 99;
+const enemyAppearencePerSecond = 10;
 
 // dialogues of different people when you talk to them
 // every person has a dialogue array. when you talk to them, you will call the first string in the array
