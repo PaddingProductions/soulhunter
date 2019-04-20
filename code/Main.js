@@ -21,7 +21,7 @@ const handleKeyUp = e => {
 
 	//if the player presses B, return to move selection.
 	// or if you press "b" when you are on menu.
-    if (currentKey['68']) {
+    if (currentKey['65']) {
 		if (g_BGstats === 'select target') {
 			g_BGstats = 'jonny action';	
 		} else if (g_BGstats === 'menu') {
