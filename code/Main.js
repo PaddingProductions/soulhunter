@@ -33,7 +33,8 @@ const handleKeyUp = e => {
 
 	if (currentKey['83'] && g_BGstats.split(" ")[1] === 'action') {
 		g_BGstats = 'select target';
-		g_selectedAction = g_buttonPos[g_mousePos[1]]
+		g_selectedAction = g_buttonPos[g_mousePos[1]];
+		
 	} else if (currentKey['83'] && g_BGstats === 'select target'){
 		actionManagement(g_selectedAction, g_turnList[0], enemy[g_mousePos[1]]);
 	}
@@ -72,8 +73,7 @@ const handleKeyUp = e => {
 		}
 	}
 	// if you press 'W', you go to menu
-	if (currentKey['87']) {
-		console.log("hello there, I would like to see the MENU PLEASE");
+	if (currentKey['87'] && g_BGstats === 'game') {
 		g_BGstats = 'menu';
 	}
 	//resetting keys

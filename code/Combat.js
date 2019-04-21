@@ -234,16 +234,17 @@ const actionManagement = (action, attacker, victim) => {
 	switch (action) {
 		//if they chose to attack
 		case 'attack': 
-
 		    attacker['status'] = action;
 		    const ATK = attacker['ATK'];
 			g_DMG = Math.floor((Math.random() *(ATK + 0.99)) + (ATK*5));
 			victim['HP'] -= g_DMG;
 
 			//if you defeated the enemy
-			if (attacker === g_playerStatus['jonny']) g_BGstats = 'jonny attack';
+			if (is_in(attacker['NAME'],g_playerStatus['party'])) g_BGstats = `${attacker['NAME']} ${action}`;
 
-			if (victim['HP'] <= 0 && attacker === g_playerStatus['jonny']) {
+			if (victim['HP'] <= 0) console.log("welp, shi*");
+			if (victim['HP'] <= 0 && is_in(attacker['NAME'],g_playerStatus['party'])) {
+				console.log('adjf;sadfasdf');
 				// if you win you gotta let it looks like you killed it not instantly kaboom!
 				setTimeout(()=> {
 					victim['status'] = 'death';
