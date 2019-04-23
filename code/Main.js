@@ -401,7 +401,6 @@ const mainLoop = () => {
 			}
 		}
 	} else {
-		console.log("adslk.fja;klsdjfl;asjdfkl;ajsd;klfasdfj");
 		//if you win, there is no point of fighting
 		if (g_BGstats === 'win') {        
 			drawBG();
@@ -416,7 +415,6 @@ const mainLoop = () => {
 		}
 		// if the turn has ended and needs to genrate a new order
 		if (g_turnList.length === 0) {
-			console.log("ddddddddddddddddddddddddddddddddddddddddddddddd")
 			//for now it will be a player 60 and enemy 40 chance.
 			// this is the percentage
 			let Num = Math.floor(Math.random()*100);

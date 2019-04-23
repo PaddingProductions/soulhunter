@@ -219,7 +219,6 @@ const drawCharacterStats = (words) => {
 }
 
 const turnManagement = () =>{
-	console.log("sdjajdsf;alk;sdfja;lskdfjasd;klfjkdkdlsdkjfasl;kdfjslkdfjldkkd");
 	// if it is the player's turn, then draw the action buttons.
 	if (is_in(g_turnList[0]['NAME'], g_playerStatus['party'])) {
   
