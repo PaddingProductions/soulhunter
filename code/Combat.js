@@ -1,7 +1,13 @@
 const endBattle = () => {
 	if ((1200-disapearFrame*30)/2 < 0) {
 		g_BGstats = 'game';
+		for (let i = 0; i < enemy.length; i++) {
+			enemy[i]['HP'] = enemy[i]['FULL HP'];
+
+		}
 		enemy = undefined;
+		g_turnList = [];
+		g_doAction = true;
 		return;
 	}
 	ctx.beginPath();
@@ -213,6 +219,7 @@ const drawCharacterStats = (words) => {
 }
 
 const turnManagement = () =>{
+	console.log("sdjajdsf;alk;sdfja;lskdfjasd;klfjkdkdlsdkjfasl;kdfjslkdfjldkkd");
 	// if it is the player's turn, then draw the action buttons.
 	if (is_in(g_turnList[0]['NAME'], g_playerStatus['party'])) {
   
@@ -242,9 +249,7 @@ const actionManagement = (action, attacker, victim) => {
 			//if you defeated the enemy
 			if (is_in(attacker['NAME'],g_playerStatus['party'])) g_BGstats = `${attacker['NAME']} ${action}`;
 
-			if (victim['HP'] <= 0) console.log("welp, shi*");
 			if (victim['HP'] <= 0 && is_in(attacker['NAME'],g_playerStatus['party'])) {
-				console.log('adjf;sadfasdf');
 				// if you win you gotta let it looks like you killed it not instantly kaboom!
 				setTimeout(()=> {
 					victim['status'] = 'death';

@@ -8,7 +8,7 @@ const startBattle = () => {
 		ctx.clip();
 		appearFrame += 1;
 		//if enemy is not defined 
-	} else if (enemy === undefined) {
+	} else {
 		///setting up enemy when the animation is over.
 		enemy = [];
 		enemy.push(g_bestiary['swordsmen']);
