@@ -218,7 +218,7 @@ let g_playerStatus = {
 		'FULL HP': 9999,
 		'STM': 999,
 		'FULL STM': 999,
-		'ATK': 9999,
+		'ATK': 999,
 		//Chance of getting to attack first in a turn.
 		'SPD': 3,
 		//critical rate
@@ -245,13 +245,15 @@ let g_playerStatus = {
 		'FULL HP': 9999,
 		'STM': 999,
 		'FULL STM': 999,
-		'ATK': 9999,
+		'ATK': 999,
+
+		'MAGIC ATK': 9999,
 		//Chance of getting to attack first in a turn.
 		'SPD': 8,
 		//critical rate
 		'CRT': null,
 		//the moves Jonny can do
-		'abilities': ['attack','magic','escape'],
+		'abilities': ['attack','b magic','escape'],
 		//the status it is on, if not, then set to none.
 		'status': null,
 		//images
@@ -260,6 +262,8 @@ let g_playerStatus = {
 		'sword swing': [document.getElementById('brushswing left'), 121, 25],
 		'sword spin': [document.getElementById('brush spin'), 18, 18],
 		'win pose': [document.getElementById('shine win pose'), 16, 24],
+		'black magic': [document.getElementById('black magic'), 36, 27],
+
 	}
 }
 
@@ -326,16 +330,6 @@ const g_bestiary = {
 
 //current enemy you are fighting
 let enemy;
-
-//the position of the buttons(not on screen)
-let g_buttonPos = [];
-for (let c = 0; c < 3; c++) {
-	g_buttonPos[c] = 'none';
-}
-//create buttons here 
-g_buttonPos[0] = 'attack';
-g_buttonPos[1] = 'defend';
-g_buttonPos[2] = 'escape';
 
 // percentage chance of enemy appearence every second
 const enemyAppearencePerSecond = 10;

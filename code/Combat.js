@@ -45,51 +45,86 @@ const drawCharacters = (characters) => {
 			ctx.restore();
 			// if the player is attacking	
 
-		} else if (character['status'] === 'attack' && swordFrame !== -1) {
-			imgx = 600;
-			img = character['sword swing'];
-
-			//making the player looks like he is swinging his sword
-			if (swordFrame < 5) {
-				ctx.drawImage(img[0], img[1] - (23 + 1) * (swordFrame + 1),
-					1, 23, 23, imgx, imgy, 23 * PX_NUM, 23 * PX_NUM);
-			} else {
-				ctx.drawImage(img[0] , 1, 1, 23, 23, imgx, imgy, 23 * PX_NUM, 23 * PX_NUM);
-			}
-			// drawing the sword
-
-			img = character['sword'];
-			imgx -= 16 * PX_NUM;
-			imgy += 10 * PX_NUM;
-			
-			ctx.drawImage(img[0], 1, ((16 * swordFrame) + (1 * (swordFrame + 1))),
-				16, 16, imgx, imgy, 16 * PX_NUM, 16 * PX_NUM);
-			swordFrame += 1;
-			// if he is being hit by the enemy
-
-
-		} else if (character['status'] === 'hit') {
-			img = character['stance'];
-
-			const random_num = Math.floor(Math.random()*10);
-			if (Math.random() > 0.5) {
-				imgx += random_num;
-			} else {
-				imgx -= random_num;
-			}
-			ctx.drawImage(img[0], imgx, imgy, img[1] * PX_NUM, img[2] * PX_NUM);
-			ctx.drawImage(shield, 0, 0, 6, 18, imgx - (10 * PX_NUM), imgy + (5 * PX_NUM)
-				, 8 * PX_NUM, 16 * PX_NUM);	
-			// other situations
-
-
+		
 		} else {
-			img = character['stance'];
+			switch (character['status']) {
+				case 'hit':
+					img = character['stance'];
 
-			//when it's waiting for his or her turn
-			ctx.drawImage(img[0], imgx, imgy, img[1] * PX_NUM, img[2] * PX_NUM);
-			ctx.drawImage(shield, 0, 0, 6, 18, imgx - (10 * PX_NUM), imgy + (5 * PX_NUM)
-				, 8 * PX_NUM, 16 * PX_NUM);
+					const random_num = Math.floor(Math.random()*10);
+					if (Math.random() > 0.5) {
+						imgx += random_num;
+					} else {
+						imgx -= random_num;
+					}
+					ctx.drawImage(img[0], imgx, imgy, img[1] * PX_NUM, img[2] * PX_NUM);
+					ctx.drawImage(shield, 0, 0, 6, 18, imgx - (10 * PX_NUM), imgy + (5 * PX_NUM)
+						, 8 * PX_NUM, 16 * PX_NUM);	
+					// other situations
+				break;
+
+				case 'attack':
+					imgx = 600;
+					img = character['sword swing'];
+					
+					//making the player looks like he is swinging his sword
+					if (swordFrame < 5) {
+						ctx.drawImage(img[0], img[1] - (23 + 1) * (swordFrame + 1),
+							1, 23, 23, imgx, imgy, 23 * PX_NUM, 23 * PX_NUM);
+					} else {
+						ctx.drawImage(img[0] , 1, 1, 23, 23, imgx, imgy, 23 * PX_NUM, 23 * PX_NUM);
+					}
+					// drawing the sword
+					
+					img = character['sword'];
+					imgx -= 16 * PX_NUM;
+					imgy += 10 * PX_NUM;
+				
+					ctx.drawImage(img[0], 1, ((16 * swordFrame) + (1 * (swordFrame + 1))),
+						16, 16, imgx, imgy, 16 * PX_NUM, 16 * PX_NUM);
+					swordFrame += 1;
+				break;
+
+				case 'attack':
+					imgx = 600;
+					img = character['sword swing'];
+				
+					//making the player looks like he is swinging his sword
+					if (swordFrame < 5) {
+						ctx.drawImage(img[0], img[1] - (23 + 1) * (swordFrame + 1),
+							1, 23, 23, imgx, imgy, 23 * PX_NUM, 23 * PX_NUM);
+					} else {
+						ctx.drawImage(img[0] , 1, 1, 23, 23, imgx, imgy, 23 * PX_NUM, 23 * PX_NUM);
+					}
+					// drawing the sword
+
+					img = character['sword'];
+					imgx -= 16 * PX_NUM;
+					imgy += 10 * PX_NUM;
+
+					ctx.drawImage(img[0], 1, ((16 * swordFrame) + (1 * (swordFrame + 1))),
+						16, 16, imgx, imgy, 16 * PX_NUM, 16 * PX_NUM);
+					swordFrame += 1;
+				break;
+
+				case 'b magic':
+					imgx = 600;
+					img = character['black magic'];
+				
+					ctx.drawImage(img[0], imgx, imgy, img[1]*PX_NUM, img[2]*PX_NUM);
+
+				break;
+
+				default:
+					img = character['stance'];
+
+					//when it's waiting for his or her turn
+					ctx.drawImage(img[0], imgx, imgy, img[1] * PX_NUM, img[2] * PX_NUM);
+					ctx.drawImage(shield, 0, 0, 6, 18, imgx - (10 * PX_NUM), imgy + (5 * PX_NUM)
+						, 8 * PX_NUM, 16 * PX_NUM);
+				break
+			}
+
 		}
 		
 	}
@@ -280,9 +315,51 @@ const actionManagement = (action, attacker, victim) => {
 				attacker['status'] = null;
 			}, 2000);
 		break;
+
+		case 'b magic':
+
+			attacker['status'] = action;
+			const M_ATK = attacker['MAGIC ATK'];
+			g_DMG = Math.floor((Math.random() *(M_ATK + 0.99)) + (M_ATK*5));
+			victim['HP'] -= g_DMG;
+
+			if (is_in(attacker['NAME'],g_playerStatus['party'])) g_BGstats = `${attacker['NAME']} ${action}`;
+
+			//if you defeated the enemy
+			if (victim['HP'] <= 0 && is_in(attacker['NAME'],g_playerStatus['party'])) {
+				// if you win you gotta let it looks like you killed it not instantly kaboom!
+				setTimeout(()=> {
+					victim['status'] = 'death';
+					// taking the enemy out of the enemy list
+					for (i = 0; i < enemy.length; i++) {
+						if (enemy[i] === victim) enemy.splice(i, 1);
+					}
+					// taking the enemy out of the turn list
+					for (i = 0; i < g_turnList.length; i++) {
+						if (g_turnList[i] === victim) g_turnList.splice(i, 1);
+					}
+					// if there are no enemy left on the battle field
+					if (enemy.length === 0) {
+						g_BGstats = 'win';
+					} 
+				}, 2000);
+			}		
+			swordFrame = 0;
+			victim['status'] = 'hit';
+			setTimeout(()=>{
+				//lets next person attack
+				g_turnList.shift();
+				//resets the damage,
+				// VERY IMPORTANT, DO NOT DELETE
+				g_DMG = null;
+				// allows the player to move on to the next player/
+				g_doAction = true;
+				victim['status'] = null;
+				attacker['status'] = null;
+			}, 2000);
+		break;
 	}
 	setTimeout(() => {
-
 		victim['status'] = null;
 	},2000);
 } 

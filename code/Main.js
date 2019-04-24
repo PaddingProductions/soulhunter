@@ -33,9 +33,10 @@ const handleKeyUp = e => {
 
 	if (currentKey['83'] && g_BGstats.split(" ")[1] === 'action') {
 		g_BGstats = 'select target';
-		g_selectedAction = g_buttonPos[g_mousePos[1]];
+		g_selectedAction = g_turnList[0]['abilities'][g_mousePos[1]]
 
 	} else if (currentKey['83'] && g_BGstats === 'select target'){
+		console.log(g_selectedAction);
 		actionManagement(g_selectedAction, g_turnList[0], enemy[g_mousePos[1]]);
 	}
 
@@ -322,8 +323,8 @@ const drawBG = () => {
 				drawEnemies(enemy);
 
 				//player attack
-			} else if (is_in(attacker, g_playerStatus['party']) && action === 'attack') {
-
+			} else if (is_in(attacker, g_playerStatus['party']) && action !== 'action') {
+				
 				drawCharacterStats(g_playerStatus['party']);
 				drawCursor();
 				drawCharacters(g_playerStatus['party']);
