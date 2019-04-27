@@ -113,6 +113,9 @@ const drawCharacters = (characters) => {
 				
 					ctx.drawImage(img[0], imgx, imgy, img[1]*PX_NUM, img[2]*PX_NUM);
 
+					img = blackMagicGlow;
+
+					ctx.drawImage(img[0], imgx, imgy, img[1]*PX_NUM, img[2]*PX_NUM);
 				break;
 
 				default:
@@ -240,14 +243,14 @@ const drawCharacterStats = (words) => {
 		//writing the HP of the character and the full hp
 		imgx = imgx + 150;
 		imgy = imgy;
-		HPString = `hp ${g_playerStatus[words[i]]['HP']} / ${g_playerStatus[words[i]]['FULL HP']}`;
+		HPString = `hp ${g_playerStatus[words[i]]['HP']}/${g_playerStatus[words[i]]['FULL HP']}`;
 
 		writeWord(HPString, imgx, imgy);
 
 		//drawing mana/ full mana
 		imgx = imgx + 100;
 		imgy = imgy;
-		HPString = `stm ${g_playerStatus[words[i]]['STM']} / ${g_playerStatus[words[i]]['FULL STM']}`;
+		HPString = `stm ${g_playerStatus[words[i]]['STM']}/${g_playerStatus[words[i]]['FULL STM']}`;
 
 		writeWord(HPString, imgx, imgy);
 	}
@@ -316,47 +319,54 @@ const actionManagement = (action, attacker, victim) => {
 			}, 2000);
 		break;
 
-		case 'b magic':
+		default:
+			//if you did black magic.
+			if (is_in(action, g_turnList[0]['b spells'])) {
+				attacker['status'] = action;
+				const M_ATK = attacker['MAGIC ATK'];
+				g_DMG = Math.floor((Math.random() *(M_ATK + 0.99)) + (M_ATK*5));
+				victim['HP'] -= g_DMG;
 
-			attacker['status'] = action;
-			const M_ATK = attacker['MAGIC ATK'];
-			g_DMG = Math.floor((Math.random() *(M_ATK + 0.99)) + (M_ATK*5));
-			victim['HP'] -= g_DMG;
+				//if the attacker is 
+				if (is_in(attacker['NAME'],g_playerStatus['party'])) {
+					g_BGstats = `${attacker['NAME']} ${action}`;
+					attacker['STM'] -= 20;
+				}
 
-			if (is_in(attacker['NAME'],g_playerStatus['party'])) g_BGstats = `${attacker['NAME']} ${action}`;
+				//if you defeated the enemy
+				if (victim['HP'] <= 0 && is_in(attacker['NAME'],g_playerStatus['party'])) {
+					// if you win you gotta let it looks like you killed it not instantly kaboom!
+					setTimeout(()=> {
+						victim['status'] = 'death';
+						// taking the enemy out of the enemy list
+						for (i = 0; i < enemy.length; i++) {
+							if (enemy[i] === victim) enemy.splice(i, 1);
+						}
+						// taking the enemy out of the turn list
+						for (i = 0; i < g_turnList.length; i++) {
+							if (g_turnList[i] === victim) g_turnList.splice(i, 1);
+						}
+						// if there are no enemy left on the battle field
+						if (enemy.length === 0) {
+							g_BGstats = 'win';
+						} 
+					}, 2000);
+				}		
 
-			//if you defeated the enemy
-			if (victim['HP'] <= 0 && is_in(attacker['NAME'],g_playerStatus['party'])) {
-				// if you win you gotta let it looks like you killed it not instantly kaboom!
-				setTimeout(()=> {
-					victim['status'] = 'death';
-					// taking the enemy out of the enemy list
-					for (i = 0; i < enemy.length; i++) {
-						if (enemy[i] === victim) enemy.splice(i, 1);
-					}
-					// taking the enemy out of the turn list
-					for (i = 0; i < g_turnList.length; i++) {
-						if (g_turnList[i] === victim) g_turnList.splice(i, 1);
-					}
-					// if there are no enemy left on the battle field
-					if (enemy.length === 0) {
-						g_BGstats = 'win';
-					} 
+				victim['status'] = 'hit';
+
+				setTimeout(()=>{
+					//lets next person attack
+					g_turnList.shift();
+					//resets the damage,
+					// VERY IMPORTANT, DO NOT DELETE
+					g_DMG = null;
+					// allows the player to move on to the next player/
+					g_doAction = true;
+					victim['status'] = null;
+					attacker['status'] = null;
 				}, 2000);
-			}		
-			swordFrame = 0;
-			victim['status'] = 'hit';
-			setTimeout(()=>{
-				//lets next person attack
-				g_turnList.shift();
-				//resets the damage,
-				// VERY IMPORTANT, DO NOT DELETE
-				g_DMG = null;
-				// allows the player to move on to the next player/
-				g_doAction = true;
-				victim['status'] = null;
-				attacker['status'] = null;
-			}, 2000);
+			}
 		break;
 	}
 	setTimeout(() => {

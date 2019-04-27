@@ -29,15 +29,31 @@ const handleKeyUp = e => {
 		}
 	}
 
-	//if they select a move to use
+	//if u press "s"
+	if (currentKey['83']) {
+		if (g_BGstats.split(" ")[1] === 'action') {
 
-	if (currentKey['83'] && g_BGstats.split(" ")[1] === 'action') {
-		g_BGstats = 'select target';
-		g_selectedAction = g_turnList[0]['abilities'][g_mousePos[1]]
+			g_BGstats = 'select target';
+			g_selectedAction = g_turnList[0]['abilities'][g_mousePos[1]];
+			//if u do magic
+			if (g_selectedAction === 'b magic' || g_selectedAction === 'w magic') {
+				g_BGstats = `${g_turnList[0]['NAME']} select spell`;
+			}
 
-	} else if (currentKey['83'] && g_BGstats === 'select target'){
-		console.log(g_selectedAction);
-		actionManagement(g_selectedAction, g_turnList[0], enemy[g_mousePos[1]]);
+		} else if (g_BGstats.split(" ")[1] === 'select' &&
+		  `${g_BGstats.split(" ")[1]} ${g_BGstats.split(" ")[2]}` === 'select spell') {
+
+			console.log("jkln;oijfalsdkjgoigsrdn")
+			g_BGstats = 'select target';
+			if (g_selectedAction === 'b magic') {
+				console.log(g_turnList);
+
+				g_selectedAction = g_turnList[0]['b spells'][g_mousePos[1]];
+			}
+
+    	} else if (g_BGstats === 'select target'){
+			actionManagement(g_selectedAction, g_turnList[0], enemy[g_mousePos[1]]);
+		}	
 	}
 
 	//if the mouse is outside the button selection list
@@ -298,8 +314,14 @@ const drawBG = () => {
 		
 		default:
 			const attacker = g_BGstats.split(" ")[0];
-			const action = g_BGstats.split(" ")[1];
+			let action = g_BGstats.split(" ");
 
+			action.shift();
+			if (action.length === 2) {
+				action = `${action[0]} ${action[1]}`;
+			} else {
+				action = `${action[0]}`;
+			}
 				//if it's enemy attack
 			if (is_in(attacker, g_playerStatus['party']) === false && action === 'attack') {
 				writeWord('hyaaaaaaa', 300, 300);
@@ -323,7 +345,7 @@ const drawBG = () => {
 				drawEnemies(enemy);
 
 				//player attack
-			} else if (is_in(attacker, g_playerStatus['party']) && action !== 'action') {
+			} else if (is_in(attacker, g_playerStatus['party']) && action === 'attack') {
 				
 				drawCharacterStats(g_playerStatus['party']);
 				drawCursor();
@@ -333,10 +355,22 @@ const drawBG = () => {
 				if (g_DMG !== undefined && g_DMG !== null) {
 					writeWord(`${g_DMG}`, 200 ,200);
 				}
+			} else if (is_in(attacker, g_playerStatus['party']) && action === 'select spell') {
+
+				if (g_selectedAction === 'b magic') {
+					drawButtons(g_playerStatus[g_turnList[0]['NAME']]['b spells']);
+				} else {
+					drawButtons(g_playerStatus[g_turnList[0]['NAME']]['w spells']);
+				}
+				drawCharacterStats(g_playerStatus['party']);
+				drawCursor();
+				drawCharacters(g_playerStatus['party']);
+				drawEnemies(enemy)
+
 			} else {
 				// if something goes wrong
 				console.log('!!! SOMETHING WRONG !!!');
-				console.log(g_BGstats)
+				console.log(g_BGstats);
 			}
 		break;
 	}

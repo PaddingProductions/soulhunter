@@ -56,8 +56,10 @@ const swordswing = document.getElementById('swordswing left');
 const swordSpin = document.getElementById('sword spin');
 const jonnyWinPose = document.getElementById('jonny win pose');
 
+//miscellaneous
 const cursor = document.getElementById('cursor');
 const textBox = document.getElementById('text box');
+const blackMagicGlow = [document.getElementById('black magic glow'), 36, 27];
 
 //letter
 var letterList = {
@@ -253,7 +255,13 @@ let g_playerStatus = {
 		//critical rate
 		'CRT': null,
 		//the moves Jonny can do
-		'abilities': ['attack','b magic','escape'],
+		'abilities': [
+			'attack',
+			'b magic',
+			'escape'
+		],
+
+		'b spells': ['fire3'],
 		//the status it is on, if not, then set to none.
 		'status': null,
 		//images
@@ -262,7 +270,7 @@ let g_playerStatus = {
 		'sword swing': [document.getElementById('brushswing left'), 121, 25],
 		'sword spin': [document.getElementById('brush spin'), 18, 18],
 		'win pose': [document.getElementById('shine win pose'), 16, 24],
-		'black magic': [document.getElementById('black magic'), 36, 27],
+		'black magic': [document.getElementById('shine black magic'), 36, 27],
 
 	}
 }
