@@ -85,46 +85,27 @@ const drawCharacters = (characters) => {
 					swordFrame += 1;
 				break;
 
-				case 'attack':
-					imgx = 600;
-					img = character['sword swing'];
-				
-					//making the player looks like he is swinging his sword
-					if (swordFrame < 5) {
-						ctx.drawImage(img[0], img[1] - (23 + 1) * (swordFrame + 1),
-							1, 23, 23, imgx, imgy, 23 * PX_NUM, 23 * PX_NUM);
-					} else {
-						ctx.drawImage(img[0] , 1, 1, 23, 23, imgx, imgy, 23 * PX_NUM, 23 * PX_NUM);
-					}
-					// drawing the sword
-
-					img = character['sword'];
-					imgx -= 16 * PX_NUM;
-					imgy += 10 * PX_NUM;
-
-					ctx.drawImage(img[0], 1, ((16 * swordFrame) + (1 * (swordFrame + 1))),
-						16, 16, imgx, imgy, 16 * PX_NUM, 16 * PX_NUM);
-					swordFrame += 1;
-				break;
-
-				case 'b magic':
-					imgx = 600;
-					img = character['black magic'];
-				
-					ctx.drawImage(img[0], imgx, imgy, img[1]*PX_NUM, img[2]*PX_NUM);
-
-					img = blackMagicGlow;
-
-					ctx.drawImage(img[0], imgx, imgy, img[1]*PX_NUM, img[2]*PX_NUM);
-				break;
-
 				default:
-					img = character['stance'];
+					//if u use b magic
+					if (is_in(character['status'], character['b spells'])) {
+						imgx = 600;
+						img = character['black magic'];
+					
+						ctx.drawImage(img[0], imgx, imgy, img[1]*PX_NUM, img[2]*PX_NUM);
+	
+						img = blackMagicGlow;
+	
+						ctx.drawImage(img[0], imgx, imgy, img[1]*PX_NUM, img[2]*PX_NUM);
+						
+						//other
+					} else {
+						img = character['stance'];
 
-					//when it's waiting for his or her turn
-					ctx.drawImage(img[0], imgx, imgy, img[1] * PX_NUM, img[2] * PX_NUM);
-					ctx.drawImage(shield, 0, 0, 6, 18, imgx - (10 * PX_NUM), imgy + (5 * PX_NUM)
-						, 8 * PX_NUM, 16 * PX_NUM);
+						//when it's waiting for his or her turn
+						ctx.drawImage(img[0], imgx, imgy, img[1] * PX_NUM, img[2] * PX_NUM);
+						ctx.drawImage(shield, 0, 0, 6, 18, imgx - (10 * PX_NUM), imgy + (5 * PX_NUM)
+							, 8 * PX_NUM, 16 * PX_NUM);
+					}
 				break
 			}
 

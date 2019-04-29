@@ -226,7 +226,13 @@ let g_playerStatus = {
 		//critical rate
 		'CRT': null,
 		//the moves Jonny can do
-		'abilities': ['attack','defend','escape'],
+		'abilities': [
+			'attack',
+			'defend',
+			'escape'
+		],
+		// black magic spells
+		'b spells': [],
 		//the status it is on, if not, then set to none.
 		'status': null,
 		//images

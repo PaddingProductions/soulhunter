@@ -355,6 +355,19 @@ const drawBG = () => {
 				if (g_DMG !== undefined && g_DMG !== null) {
 					writeWord(`${g_DMG}`, 200 ,200);
 				}
+				//if you use a spell
+			} else if (is_in(attacker, g_playerStatus['party']) && is_in(action,g_turnList[0]['b spells'])) {
+
+				drawCharacterStats(g_playerStatus['party']);
+				drawCursor();
+				drawCharacters(g_playerStatus['party']);
+				drawEnemies(enemy)
+
+				if (g_DMG !== undefined && g_DMG !== null) {
+					writeWord(`${g_DMG}`, 200 ,200);
+				}
+
+				// if you are choseing a spell to use
 			} else if (is_in(attacker, g_playerStatus['party']) && action === 'select spell') {
 
 				if (g_selectedAction === 'b magic') {
