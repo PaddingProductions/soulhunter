@@ -68,8 +68,8 @@ const drawCharacters = (characters) => {
 					img = character['sword swing'];
 					
 					//making the player looks like he is swinging his sword
-					if (swordFrame < 5) {
-						ctx.drawImage(img[0], img[1] - (23 + 1) * (swordFrame + 1),
+					if (actionFrame < 5) {
+						ctx.drawImage(img[0], img[1] - (23 + 1) * (actionFrame + 1),
 							1, 23, 23, imgx, imgy, 23 * PX_NUM, 23 * PX_NUM);
 					} else {
 						ctx.drawImage(img[0] , 1, 1, 23, 23, imgx, imgy, 23 * PX_NUM, 23 * PX_NUM);
@@ -80,9 +80,9 @@ const drawCharacters = (characters) => {
 					imgx -= 16 * PX_NUM;
 					imgy += 10 * PX_NUM;
 				
-					ctx.drawImage(img[0], 1, ((16 * swordFrame) + (1 * (swordFrame + 1))),
+					ctx.drawImage(img[0], 1, ((16 * actionFrame) + (1 * (actionFrame + 1))),
 						16, 16, imgx, imgy, 16 * PX_NUM, 16 * PX_NUM);
-					swordFrame += 1;
+					actionFrame += 1;
 				break;
 
 				default:
@@ -140,11 +140,11 @@ const drawEnemies = (enemies) => {
 			case 'attack': 
 
 			    //if you already swung the sword
-			    if (swordFrame !== -1) {
-					imgx = 100 + (10*swordFrame);
+			    if (actionFrame !== -1) {
+					imgx = 100 + (10*actionFrame);
 					//making the enemy is stabing the player
 					ctx.drawImage(enemyImages[name], imgx, imgy, 32 * PX_NUM, 30 * PX_NUM);
-					swordFrame += 1;
+					actionFrame += 1;
 				} else {
 					//getting the image of the enemy
 					img = enemyImages[enemies[i]['NAME']];
@@ -285,7 +285,7 @@ const actionManagement = (action, attacker, victim) => {
 					} 
 				}, 2000);
 			}		
-			swordFrame = 0;
+			actionFrame = 0;
 			victim['status'] = 'hit';
 			setTimeout(()=>{
 				//lets next person attack

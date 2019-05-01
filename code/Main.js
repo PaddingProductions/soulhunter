@@ -124,7 +124,7 @@ const handleKeyDown = e => {
 	currentKey[e.keyCode] = 1;
 	// up = p left = l right = ' down = ;'
 	if (e.keyCode === 83)
-		g_swordFrame = 0;
+		actionFrame = 0;
 
 	if (currentKey[13] === 1) {
 		if (g_BGstats === 'start?') {
@@ -486,8 +486,8 @@ const mainLoop = () => {
 			turnManagement();
 		}
 
-		if (swordFrame >= 7) {
-			swordFrame = -1;
+		if (actionFrame >= 7) {
+			actionFrame = -1;
 		}
 
 		drawBG();

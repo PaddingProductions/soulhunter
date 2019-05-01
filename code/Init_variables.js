@@ -134,9 +134,6 @@ let appearFrame = 0;
 // which frame it's on (walking animation)
 let g_frameNum = 0;
 
-// which frame the sword swing is on
-let g_swordFrame = -1;
-
 //player postion
 let playerPosX = 0;
 let playerPosY = 0;
@@ -206,7 +203,7 @@ let battle = true;
 //number of enemies in the battle
 let enemyNum = 1;
 
-let swordFrame = 0;
+let actionFrame = 0;
 
 let g_playerStatus = {
 	'party': ['jonny','shine'],
