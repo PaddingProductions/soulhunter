@@ -134,6 +134,9 @@ let appearFrame = 0;
 // which frame it's on (walking animation)
 let g_frameNum = 0;
 
+// which frame it's on (magic animation)
+let magicFrame = 0;
+
 //player postion
 let playerPosX = 0;
 let playerPosY = 0;
@@ -293,6 +296,7 @@ const g_bestiary = {
 		'SPD': 3,
 		//critical rate
 		'CRT': null,
+		'b spells': [],
 		//a function called every time 
 		'AI': () => {
             return 'attack';
@@ -312,6 +316,7 @@ const g_bestiary = {
 		'SPD': 1,
 		//critical rate
 		'CRT': null,
+		'b spells': [],
 		//a function called every time 
 		'AI': () => {
             return 'attack';
@@ -331,6 +336,7 @@ const g_bestiary = {
 		'SPD': 3,
 		//critical rate
 		'CRT': null,
+		'b spells': [],
 		//a function called every time 
 		'AI': () => {
             return 'attack';

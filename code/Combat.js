@@ -88,15 +88,25 @@ const drawCharacters = (characters) => {
 				default:
 					//if u use b magic
 					if (is_in(character['status'], character['b spells'])) {
-						imgx = 600;
-						img = character['black magic'];
-					
-						ctx.drawImage(img[0], imgx, imgy, img[1]*PX_NUM, img[2]*PX_NUM);
+						let imgx = 600;
+						let img = character['black magic'];
+						let cutx = 0;
+						//figuing out the picture based on the framenum
+						if (magicFrame < 10) {
+							cutx = 1;
+						} else if (magicFrame >= 11 && magicFrame <= 15) {
+							cutx = 1+img[1];
+						} else { 
+							cutx = 1+(img[1]*2);
+						}
+
+						ctx.drawImage(img[0], cutx, 1, img[1], img[2], imgx, imgy, img[1]*PX_NUM, img[2]*PX_NUM);
 	
 						img = blackMagicGlow;
 	
 						ctx.drawImage(img[0], imgx, imgy, img[1]*PX_NUM, img[2]*PX_NUM);
 						
+						magicFrame += 1;
 						//other
 					} else {
 						img = character['stance'];

@@ -485,9 +485,14 @@ const mainLoop = () => {
 		if (g_doAction === true) {
 			turnManagement();
 		}
-
-		if (actionFrame >= 7) {
+		//reset swordframe
+		if (g_BGstats.split(' ')[1] === 'attack' && actionFrame >= 7) {
 			actionFrame = -1;
+		}
+		//reset magic frame
+		console.log(g_turnList[0]);
+		if (is_in(g_BGstats.split(' ')[1],g_turnList[0]['b spells']) === false && magicFrame > 0) {
+			magicFrame = 0
 		}
 
 		drawBG();
