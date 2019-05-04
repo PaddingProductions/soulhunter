@@ -60,6 +60,7 @@ const jonnyWinPose = document.getElementById('jonny win pose');
 const cursor = document.getElementById('cursor');
 const textBox = document.getElementById('text box');
 const blackMagicGlow = [document.getElementById('black magic glow'), 36, 27];
+const fireball = [document.getElementById('fire ball'), 20, 20];
 
 //letter
 var letterList = {

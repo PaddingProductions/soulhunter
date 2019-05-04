@@ -106,7 +106,20 @@ const drawCharacters = (characters) => {
 	
 						ctx.drawImage(img[0], imgx, imgy, img[1]*PX_NUM, img[2]*PX_NUM);
 						
+
+						img = fireball;
+						//figuing out the picture based on the framenum
+						if (magicFrame < 10) {
+							imgy -= img[2] * PX_NUM;
+						} else if (magicFrame >= 11 && magicFrame <= 15) {
+							imgx -= img[1] * PX_NUM;
+						} else { 
+							imgx -= img[1] * (magicFrame - 15)
+						}
+						ctx.drawImage(img[0], imgx, imgy, img[1]*PX_NUM, img[2]*PX_NUM);
+
 						magicFrame += 1;
+
 						//other
 					} else {
 						img = character['stance'];
