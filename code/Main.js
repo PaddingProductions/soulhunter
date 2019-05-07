@@ -110,7 +110,7 @@ const handleKeyUp = e => {
 	//action buttons
 	currentKey['83'] = 0;
 	currentKey['65'] = 0;
-    currentKey['68'] = 0;
+  currentKey['68'] = 0;
 	currentKey['13'] = 0;
 	currentKey['87'] = 0;
 	g_frameNum = 0;
@@ -390,13 +390,16 @@ const drawBG = () => {
 //calls every 33 milliseconds 
 //reacts to the buttons you are pressing.
 const mainLoop = () => {
+	if (currentKey['40'] === true) {
+		console.log(currentKey);
+	}
 	if (enemy === undefined) {
 
 
 		let lastPlayerX = playerPosX;
 		let lastPlayerY = playerPosY;
 
-        if (g_BGstats === 'game') {
+    if (g_BGstats === 'game') {
 			appearFrame = 0;
 			disapearFrame = 0;
 			// left
@@ -447,7 +450,7 @@ const mainLoop = () => {
 		}
 	} else {
 		//if you win, there is no point of fighting
-		if (g_BGstats === 'win') {        
+		if (g_BGstats === 'win') {
 			drawBG();
 			swordSpinFrame += 1;
 			if (swordSpinFrame > 8) {
@@ -482,16 +485,17 @@ const mainLoop = () => {
 		if (g_doAction === true) {
 			turnManagement();
 		}
-		//reset swordframe
-		if (g_BGstats.split(' ')[1] === 'attack' && actionFrame >= 7) {
-			actionFrame = -1;
-		}
+
 		//reset magic frame
 		if (is_in(g_BGstats.split(' ')[1],g_turnList[0]['b spells']) === false && magicFrame > 0) {
 			magicFrame = 0
 		}
 
 		drawBG();
+	}
+	//reset swordframe
+	if (g_BGstats.split(' ')[1] === 'attack' && actionFrame >= 7) {
+		actionFrame = -1;
 	}
 };
 

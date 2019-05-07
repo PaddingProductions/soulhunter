@@ -390,6 +390,6 @@ const tutorial = [
 	"you may press 'w' to use menu.",
 	"combat controls",
 	"use arrow keys to select action.",
-	"if you use magic, you will drain your STM.",
+	"if you use magic, you will drain your stm.",
     "good luck."
 ];

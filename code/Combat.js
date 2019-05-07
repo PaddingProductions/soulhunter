@@ -66,23 +66,30 @@ const drawCharacters = (characters) => {
 				case 'attack':
 					imgx = 600;
 					img = character['sword swing'];
+					//if you didn't already swung the sword
+					if (actionFrame !== -1) {
+						//making the player looks like he is swinging his sword
+						if (actionFrame < 5) {
+							ctx.drawImage(img[0], img[1] - (23 + 1) * (actionFrame + 1),
+								1, 23, 23, imgx, imgy, 23 * PX_NUM, 23 * PX_NUM);
+						} else {
+							ctx.drawImage(img[0] , 1, 1, 23, 23, imgx, imgy, 23 * PX_NUM, 23 * PX_NUM);
+						}
+						// drawing the sword
+						
+						img = character['sword'];
+						imgx -= 16 * PX_NUM;
+						imgy += 10 * PX_NUM;
 					
-					//making the player looks like he is swinging his sword
-					if (actionFrame < 5) {
-						ctx.drawImage(img[0], img[1] - (23 + 1) * (actionFrame + 1),
-							1, 23, 23, imgx, imgy, 23 * PX_NUM, 23 * PX_NUM);
+						ctx.drawImage(img[0], 1, ((16 * actionFrame) + (1 * (actionFrame + 1))),
+							16, 16, imgx, imgy, 16 * PX_NUM, 16 * PX_NUM);
+						actionFrame += 1;
 					} else {
-						ctx.drawImage(img[0] , 1, 1, 23, 23, imgx, imgy, 23 * PX_NUM, 23 * PX_NUM);
+						//drawing the character on the base line
+						img = character['stance'];
+
+						ctx.drawImage(img[0], imgx, imgy, img[1] * PX_NUM, img[2] * PX_NUM);
 					}
-					// drawing the sword
-					
-					img = character['sword'];
-					imgx -= 16 * PX_NUM;
-					imgy += 10 * PX_NUM;
-				
-					ctx.drawImage(img[0], 1, ((16 * actionFrame) + (1 * (actionFrame + 1))),
-						16, 16, imgx, imgy, 16 * PX_NUM, 16 * PX_NUM);
-					actionFrame += 1;
 				break;
 
 				default:
@@ -348,9 +355,10 @@ const actionManagement = (action, attacker, victim) => {
 
 				//if you defeated the enemy
 				if (victim['HP'] <= 0 && is_in(attacker['NAME'],g_playerStatus['party'])) {
-					// if you win you gotta let it looks like you killed it not instantly kaboom!
-					setTimeout(()=> {
+					setTimeout(() => {
 						victim['status'] = 'death';
+					}, 2000)
+					setTimeout(() => {
 						// taking the enemy out of the enemy list
 						for (i = 0; i < enemy.length; i++) {
 							if (enemy[i] === victim) enemy.splice(i, 1);
