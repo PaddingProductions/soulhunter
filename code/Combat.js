@@ -143,52 +143,61 @@ const drawEnemies = (enemies) => {
 
 	for (let i = 0; i < enemies.length; i++) {
 		// if it has any positive or negative status.
+		const enemy = enemies[i]
 		const status = enemies[i]['status'];
 		const name = enemies[i]['NAME'];
 		imgx = 100;
 		imgy = 300+(100*i);
 
-		switch(status) {
-			case 'death':
-
+		switch (status) {
+			case 'death': {
 				//if the animation is done
-				if (DeathFrame >= 7) {
-					return;
+				if (enemy['deathFrame'] >= 7) {
+					break;
 				}
-				ctx.drawImage(enemyDeath,(DeathFrame*26),0,26,27, imgx, imgy, 26 * PX_NUM, 27 * PX_NUM);
+				let img = enemyImages[name]
+				if (enemy['deathFrame'] <= 3) {
+					ctx.drawImage(img[0], imgx, imgy, img[1] * PX_NUM, img[2] * PX_NUM);
+				}
+				img = enemyDeathEffect;
 
-				DeathFrame += 1;
+				ctx.drawImage(img[0], 1+(enemy['deathFrame'] * (img[1] + 1)), 1, img[1], img[2], 
+				  imgx, imgy, img[1] * PX_NUM, img[2] * PX_NUM);
 
+				enemy['deathFrame'] += 1;
+			}
 			break;
-			case 'attack': 
-
+			case 'attack': {
 			    //if you already swung the sword
 			    if (actionFrame !== -1) {
 					imgx = 100 + (10*actionFrame);
 					//making the enemy is stabing the player
-					ctx.drawImage(enemyImages[name], imgx, imgy, 32 * PX_NUM, 30 * PX_NUM);
+					img = enemyImages[name];
+					ctx.drawImage(img[0], imgx, imgy, img[1] * PX_NUM, img[2] * PX_NUM);
 					actionFrame += 1;
 				} else {
 					//getting the image of the enemy
-					img = enemyImages[enemies[i]['NAME']];
-					ctx.drawImage(img, imgx, imgy, 32 * PX_NUM, 30 * PX_NUM);
+					const img = enemyImages[enemies[i]['NAME']];
+					ctx.drawImage(img[0], imgx, imgy, img[1] * PX_NUM, img[2] * PX_NUM);
 				}
+			}
 			break;
-			case 'hit':
+			case 'hit': {
 			    const random_num = Math.floor(Math.random()*10);
 			    if (Math.random() > 0.5) {
                     imgx += random_num;
 				} else {
 					imgx -= random_num;
 				}
-				ctx.drawImage(enemyImages[name], imgx, imgy, 32 * PX_NUM, 30 * PX_NUM);
-
+				img = enemyImages[name];
+				ctx.drawImage(img[0], imgx, imgy, img[1] * PX_NUM, imf[2] * PX_NUM);
+			}
 			break;
-			default:
-
+			default: {
 				//getting the image of the enemy
-				img = enemyImages[enemies[i]['NAME']];
-				ctx.drawImage(img, imgx, imgy, 32 * PX_NUM, 30 * PX_NUM);
+				const img = enemyImages[enemies[i]['NAME']];
+				ctx.drawImage(img[0], imgx, imgy, img[1] * PX_NUM, img[2] * PX_NUM);
+			}
 			break;
 		}
 	}
@@ -292,8 +301,8 @@ const actionManagement = (action, attacker, victim) => {
 
 			if (victim['HP'] <= 0 && is_in(attacker['NAME'],g_playerStatus['party'])) {
 				// if you win you gotta let it looks like you killed it not instantly kaboom!
+				victim['status'] = 'death';  
 				setTimeout(()=> {
-					victim['status'] = 'death';
 					// taking the enemy out of the enemy list
 					for (i = 0; i < enemy.length; i++) {
 						if (enemy[i] === victim) enemy.splice(i, 1);
@@ -309,7 +318,7 @@ const actionManagement = (action, attacker, victim) => {
 				}, 2000);
 			}		
 			actionFrame = 0;
-			victim['status'] = 'hit';
+			//victim['status'] = 'hit';
 			setTimeout(()=>{
 				//lets next person attack
 				g_turnList.shift();
@@ -357,7 +366,7 @@ const actionManagement = (action, attacker, victim) => {
 					}, 2000);
 				}		
 
-				victim['status'] = 'hit';
+				//victim['status'] = 'hit';
 
 				setTimeout(()=>{
 					//lets next person attack

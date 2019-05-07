@@ -43,11 +43,8 @@ const handleKeyUp = e => {
 		} else if (g_BGstats.split(" ")[1] === 'select' &&
 		  `${g_BGstats.split(" ")[1]} ${g_BGstats.split(" ")[2]}` === 'select spell') {
 
-			console.log("jkln;oijfalsdkjgoigsrdn")
 			g_BGstats = 'select target';
 			if (g_selectedAction === 'b magic') {
-				console.log(g_turnList);
-
 				g_selectedAction = g_turnList[0]['b spells'][g_mousePos[1]];
 			}
 
@@ -490,7 +487,6 @@ const mainLoop = () => {
 			actionFrame = -1;
 		}
 		//reset magic frame
-		console.log(g_turnList[0]);
 		if (is_in(g_BGstats.split(' ')[1],g_turnList[0]['b spells']) === false && magicFrame > 0) {
 			magicFrame = 0
 		}

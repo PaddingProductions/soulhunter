@@ -42,12 +42,12 @@ const swordswingUp = document.getElementById("swordswing up");
 
 //enemy stance
 const enemyImages = {
-	'swordsmen': document.getElementById('swordsmen'),
-	'shieldsmen': document.getElementById('shieldsmen'),
-	'spearsmen': document.getElementById('spearsmen'),
-	'bombermen': document.getElementById('bombermen'),
+	'swordsmen': [document.getElementById('swordsmen'), 32, 30],
+	'shieldsmen': [document.getElementById('shieldsmen'), 25, 30],
+	'spearsmen': [document.getElementById('spearsmen'), 32, 30],
+	'bombermen': [document.getElementById('bombermen'), 20, 30],
 }
-const enemyDeath = document.getElementById('enemy death');
+const enemyDeathEffect = [document.getElementById('enemy death'), 24, 23];
 
 //player's stuff
 const stand_jonny = document.getElementById('player jonny');
@@ -179,9 +179,6 @@ let g_mousePos = [0, 0];
 //the action that is going to be done after select the enemy
 let g_selectedAction;
 
-//ENEMY DEATH ANIMATION FRAME NUMBER
-let DeathFrame = 0;
-
 //player Win ANIMATION FRAME NUMBER
 let swordSpinFrame = 0;
 
@@ -297,7 +294,10 @@ const g_bestiary = {
 		'SPD': 3,
 		//critical rate
 		'CRT': null,
+		//list of black magic spells
 		'b spells': [],
+
+		'deathFrame': 0,
 		//a function called every time 
 		'AI': () => {
             return 'attack';
@@ -317,7 +317,10 @@ const g_bestiary = {
 		'SPD': 1,
 		//critical rate
 		'CRT': null,
+		//list of black magic spells
 		'b spells': [],
+
+		'deathFrame': 0,
 		//a function called every time 
 		'AI': () => {
             return 'attack';
@@ -337,7 +340,10 @@ const g_bestiary = {
 		'SPD': 3,
 		//critical rate
 		'CRT': null,
+		//list of black magic spells
 		'b spells': [],
+		
+		'deathFrame': 0,
 		//a function called every time 
 		'AI': () => {
             return 'attack';
@@ -378,7 +384,12 @@ let g_currentDialogue;
 
 const tutorial = [
 	"press start to skip turoial",
+	"overworld controls",
     "use the buttons: p l ; '  on the keyboard to move.",
-    "press s to swing sword. press d to talk.",
+	"press s to swing sword. press d to talk.",
+	"you may press 'w' to use menu.",
+	"combat controls",
+	"use arrow keys to select action.",
+	"if you use magic, you will drain your STM.",
     "good luck."
-]
+];
