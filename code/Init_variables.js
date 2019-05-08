@@ -389,7 +389,7 @@ const tutorial = [
 	"press s to swing sword. press d to talk.",
 	"you may press 'w' to use menu.",
 	"combat controls",
-	"use arrow keys to select action.",
+	"use the move buttons to select action.",
 	"if you use magic, you will drain your stm.",
     "good luck."
 ];

@@ -13,11 +13,13 @@ const handleKeyUp = e => {
 
 	lastPos = [g_mousePos[0], g_mousePos[1]];
 
-	//changing the position of the curor 
-	if (currentKey['40']) g_mousePos[1] += 1;
-	if (currentKey['37']) g_mousePos[0] -= 1;
-	if (currentKey['38']) g_mousePos[1] -= 1;
-	if (currentKey['39']) g_mousePos[0] += 1;
+	//changing the position of the cursor 
+	if (enemy !== undefined) { 
+		if (currentKey['222']) g_mousePos[1] += 1;
+		if (currentKey['76']) g_mousePos[0] -= 1;
+		if (currentKey['186']) g_mousePos[1] -= 1;
+		if (currentKey['80']) g_mousePos[0] += 1;
+	}
 
 	//if the player presses B, return to move selection.
 	// or if you press "b" when you are on menu.
@@ -103,10 +105,6 @@ const handleKeyUp = e => {
 	if (currentKey['80'] == 2) { currentKey['80'] = 0 };
 	if (currentKey['186'] == 2) { currentKey['186'] = 0 };
 
-	currentKey['37'] = 0;
-	currentKey['38'] = 0;
-	currentKey['39'] = 0;
-	currentKey['40'] = 0;
 	//action buttons
 	currentKey['83'] = 0;
 	currentKey['65'] = 0;
@@ -390,9 +388,6 @@ const drawBG = () => {
 //calls every 33 milliseconds 
 //reacts to the buttons you are pressing.
 const mainLoop = () => {
-	if (currentKey['40'] === true) {
-		console.log(currentKey);
-	}
 	if (enemy === undefined) {
 
 
