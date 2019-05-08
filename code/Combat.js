@@ -286,8 +286,11 @@ const turnManagement = () =>{
 		// if is enemy's move
 		g_BGstats = `${g_turnList[0]['NAME']} attack`;
 		for (i = 0; i < enemy.length; i++) {
+			const victimIndex = Math.floor(Math.random() * g_playerStatus['party'].length);
+			const victimName = g_playerStatus['party'][victimIndex];
+
 			if (g_turnList[0] === enemy[i]) {
-				actionManagement(enemy[i]['AI'](), enemy[i], g_playerStatus['jonny']);
+				actionManagement(enemy[i]['AI'](), enemy[i], g_playerStatus[victimName]);
 			}
 		}
 	}
@@ -339,8 +342,17 @@ const actionManagement = (action, attacker, victim) => {
 			}, 2000);
 		break;
 
+		case 'defend':
+			setTimeout(()=>{
+				//lets next person attack
+				g_turnList.shift();
+				// allows the player to move on to the next player/
+				g_doAction = true;
+			}, 1000);
+		break;
 		default:
 			//if you did black magic.
+			// black magic's animation is longer, so it is
 			if (is_in(action, g_turnList[0]['b spells'])) {
 				attacker['status'] = action;
 				const M_ATK = attacker['MAGIC ATK'];
@@ -371,7 +383,7 @@ const actionManagement = (action, attacker, victim) => {
 						if (enemy.length === 0) {
 							g_BGstats = 'win';
 						} 
-					}, 2000);
+					}, 3000);
 				}		
 
 				//victim['status'] = 'hit';
@@ -386,7 +398,7 @@ const actionManagement = (action, attacker, victim) => {
 					g_doAction = true;
 					victim['status'] = null;
 					attacker['status'] = null;
-				}, 2000);
+				}, 3000);
 			}
 		break;
 	}

@@ -15,10 +15,10 @@ const handleKeyUp = e => {
 
 	//changing the position of the cursor 
 	if (enemy !== undefined) { 
-		if (currentKey['222']) g_mousePos[1] += 1;
+		if (currentKey['186']) g_mousePos[1] += 1;
 		if (currentKey['76']) g_mousePos[0] -= 1;
-		if (currentKey['186']) g_mousePos[1] -= 1;
-		if (currentKey['80']) g_mousePos[0] += 1;
+		if (currentKey['80']) g_mousePos[1] -= 1;
+		if (currentKey['222']) g_mousePos[0] += 1;
 	}
 
 	//if the player presses B, return to move selection.
