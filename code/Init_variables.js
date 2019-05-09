@@ -208,6 +208,9 @@ let actionFrame = 0;
 
 let g_playerStatus = {
 	'party': ['jonny','shine'],
+	'items': {
+		'gil': 1000,
+	},
 	'jonny': {
 		//positions on screen
 		'posx': 0,
@@ -297,6 +300,8 @@ const g_bestiary = {
 		//list of black magic spells
 		'b spells': [],
 
+		'gil': 100,
+
 		'deathFrame': 0,
 		//a function called every time 
 		'AI': () => {
@@ -319,6 +324,8 @@ const g_bestiary = {
 		'CRT': null,
 		//list of black magic spells
 		'b spells': [],
+
+		'gil': 100,
 
 		'deathFrame': 0,
 		//a function called every time 
@@ -343,6 +350,8 @@ const g_bestiary = {
 		//list of black magic spells
 		'b spells': [],
 		
+		'gil': 100,
+
 		'deathFrame': 0,
 		//a function called every time 
 		'AI': () => {
@@ -393,3 +402,5 @@ const tutorial = [
 	"if you use magic, you will drain your stm.",
     "good luck."
 ];
+//the amount of Gil earned at the end of battles
+let gilEarned = 0;

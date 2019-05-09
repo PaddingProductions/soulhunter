@@ -1,13 +1,16 @@
 const endBattle = () => {
 	if ((1200-disapearFrame*30)/2 < 0) {
-		g_BGstats = 'game';
+		g_BGstats = 'report card';
 		for (let i = 0; i < enemy.length; i++) {
+			console.log("moi noi noi juggeren")
 			enemy[i]['HP'] = enemy[i]['FULL HP'];
 			enemy[i]['deathFrame'] = 0;
 		}
 		enemy = undefined;
 		g_turnList = [];
 		g_doAction = true;
+		//calculating the amount of gil earned
+		g_playerStatus['items']['gil'] += gilEarned;
 		return;
 	}
 	ctx.beginPath();
@@ -312,6 +315,7 @@ const actionManagement = (action, attacker, victim) => {
 			if (victim['HP'] <= 0 && is_in(attacker['NAME'],g_playerStatus['party'])) {
 				// if you win you gotta let it looks like you killed it not instantly kaboom!
 				victim['status'] = 'death';  
+				gilEarned += victim['gil'];
 				setTimeout(()=> {
 					// taking the enemy out of the enemy list
 					for (i = 0; i < enemy.length; i++) {
@@ -323,7 +327,7 @@ const actionManagement = (action, attacker, victim) => {
 					}
 					// if there are no enemy left on the battle field
 					if (enemy.length === 0) {
-        	       		g_BGstats = 'win';
+        	  g_BGstats = 'win';
 					} 
 				}, 2000);
 			}		
@@ -369,6 +373,7 @@ const actionManagement = (action, attacker, victim) => {
 				if (victim['HP'] <= 0 && is_in(attacker['NAME'],g_playerStatus['party'])) {
 					setTimeout(() => {
 						victim['status'] = 'death';
+						gilEarned += enemy[i]['gil'];
 					}, 2000)
 					setTimeout(() => {
 						// taking the enemy out of the enemy list

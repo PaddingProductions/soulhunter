@@ -52,7 +52,9 @@ const handleKeyUp = e => {
 
     	} else if (g_BGstats === 'select target'){
 			actionManagement(g_selectedAction, g_turnList[0], enemy[g_mousePos[1]]);
-		}	
+		}	else if (g_BGstats === 'report card') {
+			g_BGstats = 'game';
+		}
 	}
 
 	//if the mouse is outside the button selection list
@@ -292,7 +294,7 @@ const drawBG = () => {
 			drawCharacters(g_playerStatus['party']);
 
 		break;
-		
+
 		case 'end': 
 			ctx.save();
 			{
@@ -306,7 +308,30 @@ const drawBG = () => {
 			}
 			ctx.restore()
 		break;
-		
+
+		case 'report card':
+			// for every charater 
+			for (let i = 0; i < g_playerStatus['party'].length; i++) {
+
+				const charater = g_playerStatus[g_playerStatus['party'][i]];
+				
+				imgx = 50;
+				imgy = 50 + 200 * i;
+
+				//profile pic. can't afford to draw a new one so it's going to be the vitory pose.
+				ctx.drawImage(charater['win pose'][0], imgx, imgy, charater['win pose'][1]*PX_NUM,
+					charater['win pose'][2]*PX_NUM);
+
+				//writing stats
+				writeWord(charater['NAME'], imgx + 60, imgy);
+				writeWord(`hp ${charater['HP']} / ${charater['FULL HP']}`, imgx + 60, imgy + 78);
+				writeWord(`stm ${charater['STM']} / ${charater['FULL STM']}`, imgx + 200, imgy);
+
+			}
+			console.log(gilEarned)
+			writeWord(`${gilEarned} gil earned`, 800, 700);
+		break;
+
 		default:
 			const attacker = g_BGstats.split(" ")[0];
 			let action = g_BGstats.split(" ");
