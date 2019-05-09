@@ -3,7 +3,7 @@ const endBattle = () => {
 		g_BGstats = 'game';
 		for (let i = 0; i < enemy.length; i++) {
 			enemy[i]['HP'] = enemy[i]['FULL HP'];
-
+			enemy[i]['deathFrame'] = 0;
 		}
 		enemy = undefined;
 		g_turnList = [];
