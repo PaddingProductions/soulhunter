@@ -217,11 +217,11 @@ let g_playerStatus = {
 		'posy': 0,
 		//stats
 		'NAME': 'jonny',
-		'HP': 9999,
-		'FULL HP': 9999,
-		'STM': 999,
-		'FULL STM': 999,
-		'ATK': 999,
+		'HP': 300,
+		'FULL HP': 300,
+		'STM': 100,
+		'FULL STM': 100,
+		'ATK': 100,
 		//Chance of getting to attack first in a turn.
 		'SPD': 3,
 		//critical rate
@@ -236,6 +236,14 @@ let g_playerStatus = {
 		'b spells': [],
 		//the status it is on, if not, then set to none.
 		'status': null,
+		'Lv': 1,
+		//experience points
+		'exp': 0,
+		//exp earned for the current battle
+		'exp earned': 0,
+		//to next level
+		// the system is basicly Lv * 1000
+		'next lv': 1000,
 		//images
 		'stance': [document.getElementById('player jonny'), 16, 23],
 		'sword': [document.getElementById('sword left'), 18, 120],
@@ -271,6 +279,14 @@ let g_playerStatus = {
 		'b spells': ['fire3'],
 		//the status it is on, if not, then set to none.
 		'status': null,
+		'Lv': 1,
+		//experience points
+		'exp': 0,
+		//exp earned for the current battle
+		'exp earned': 0,
+		//to next level
+		// the system is basicly Lv * 1000
+		'next lv': 1000,
 		//images
 		'stance': [document.getElementById('Shine stance'), 36, 27],
 		'sword': [document.getElementById('brush left'), 18, 120],
@@ -299,9 +315,14 @@ const g_bestiary = {
 		'CRT': null,
 		//list of black magic spells
 		'b spells': [],
-
-		'gil': 100,
-
+		//amount of gil it will drop.
+		'gil': [50, 200],
+		//amount of exp giving when defeated
+		'exp': [50, 200],
+		//all the posible items it will drop and it's rate of drop.
+		'drops': [
+			['bandage', 80]
+		],
 		'deathFrame': 0,
 		//a function called every time 
 		'AI': () => {
@@ -324,9 +345,14 @@ const g_bestiary = {
 		'CRT': null,
 		//list of black magic spells
 		'b spells': [],
-
-		'gil': 100,
-
+		//amount of gil it will drop.
+		'gil': [50, 200],
+		//amount of exp giving when defeated
+		'exp': [50, 200],
+		//all the posible items it will drop and it's rate of drop.
+		'drops': [
+			['bandage', 80]
+		],
 		'deathFrame': 0,
 		//a function called every time 
 		'AI': () => {
@@ -349,9 +375,14 @@ const g_bestiary = {
 		'CRT': null,
 		//list of black magic spells
 		'b spells': [],
-		
-		'gil': 100,
-
+		//amount of gil it will drop.
+		'gil': [50, 200],
+		//amount of exp giving when defeated
+		'exp': [50, 200],
+		//all the posible items it will drop and it's rate of drop.
+		'drops': [
+			['bandage', 80]
+		],
 		'deathFrame': 0,
 		//a function called every time 
 		'AI': () => {

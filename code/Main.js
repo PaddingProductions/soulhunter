@@ -8,6 +8,11 @@ const is_in = (a, vector) => {
 	return false;
 }
 
+// randomizer, give in start range, and end range.
+const randomizer = (start, end) => {
+	return Math.floor((Math.random() * (end - start)) + start);
+}
+
 // when button uo it resets the unicode number to Null.
 const handleKeyUp = e => {
 
@@ -23,7 +28,7 @@ const handleKeyUp = e => {
 
 	//if the player presses B, return to move selection.
 	// or if you press "b" when you are on menu.
-    if (currentKey['65']) {
+  if (currentKey['65']) {
 		if (g_BGstats === 'select target') {
 			g_BGstats = 'jonny action';	
 		} else if (g_BGstats === 'menu') {
@@ -54,6 +59,11 @@ const handleKeyUp = e => {
 			actionManagement(g_selectedAction, g_turnList[0], enemy[g_mousePos[1]]);
 		}	else if (g_BGstats === 'report card') {
 			g_BGstats = 'game';
+			for (let i = 0; i < g_playerStatus['party'].length;i++) {
+				const character = g_playerStatus[g_playerStatus['party'][i]]; 
+				character['exp'] += character['exp earned'];
+				character['exp earned'] = 0;
+			}
 		}
 	}
 
@@ -227,10 +237,13 @@ const drawBG = () => {
 
 				//writing stats
 				writeWord(charater['NAME'], imgx + 60, imgy);
-				writeWord(`hp ${charater['HP']} / ${charater['FULL HP']}`, imgx + 60, imgy + 78);
-				writeWord(`stm ${charater['STM']} / ${charater['FULL STM']}`, imgx + 200, imgy);
-				
+				writeWord(`hp ${charater['HP']} / ${charater['FULL HP']}`, imgx + 200, imgy);
+				writeWord(`stm ${charater['STM']} / ${charater['FULL STM']}`, imgx + 200, imgy + 70);
+				//writing exp
+				writeWord(`${charater['exp']} exp / ${charater['next lv']} to next lv`, imgx+200, imgy+170);
 			}
+			writeWord(`${g_playerStatus.items.gil} gil`, 800, 700);
+			
 		break;
 
 		case 'surprise':
@@ -320,16 +333,19 @@ const drawBG = () => {
 
 				//profile pic. can't afford to draw a new one so it's going to be the vitory pose.
 				ctx.drawImage(charater['win pose'][0], imgx, imgy, charater['win pose'][1]*PX_NUM,
-					charater['win pose'][2]*PX_NUM);
+				  charater['win pose'][2]*PX_NUM);
 
 				//writing stats
 				writeWord(charater['NAME'], imgx + 60, imgy);
 				writeWord(`hp ${charater['HP']} / ${charater['FULL HP']}`, imgx + 60, imgy + 78);
 				writeWord(`stm ${charater['STM']} / ${charater['FULL STM']}`, imgx + 200, imgy);
-
+				//writing exp
+				imgx += 200;
+				imgy += 30;
+				writeWord(`${charater['exp']}  ${charater['exp earned']} / ${charater['next lv']} to next lv`, imgx, imgy);
 			}
-			console.log(gilEarned)
 			writeWord(`${gilEarned} gil earned`, 800, 700);
+			
 		break;
 
 		default:
@@ -468,6 +484,16 @@ const mainLoop = () => {
 				g_BGstats = 'game';
 			}
 		}
+		if (g_BGstats === 'report card') {
+			console.log("I'm Ok, I think.");
+			for (let i = 0; i < g_playerStatus["party"].length; i++) {
+				const character = g_playerStatus[g_playerStatus["party"][i]];
+				if (character["exp"] >= character['lv']) {
+					character["Lv"] += 1;
+					character['next lv'] = character["Lv"] * 1000; 
+				}
+			}
+		}
 	} else {
 		//if you win, there is no point of fighting
 		if (g_BGstats === 'win') {
@@ -526,13 +552,16 @@ const writeWord = (string, posx, posy, wrapPosx, wrapStyle) => {
 
 	let line = 1;
 	let whenSwicthed = 0;
-    let wrapPos = Math.floor((wrapPosx-posx)/8);
+  let wrapPos = Math.floor((wrapPosx-posx)/8);
+	//prevent overlap with the caller's function's imgx and y
+	let imgx;
+	let imgy;
 
 	for (i = 0; i < string.length; i++) {
 		var letter = string.charAt(i);
 
 		if (letter !== ' ') {
-            if (wrapStyle === 'standard') {
+      if (wrapStyle === 'standard') {
 
 				imgx = (posx + (8 * i) * PX_NUM) - ((8*whenSwicthed)*(line-1)*PX_NUM);
 				imgy = posy+(12*(line-1))*PX_NUM;
@@ -557,6 +586,7 @@ const writeWord = (string, posx, posy, wrapPosx, wrapStyle) => {
 			}
 		}
 	}
+	
 }
 //loading time
 setTimeout(()=>{

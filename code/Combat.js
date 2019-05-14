@@ -1,11 +1,12 @@
 const endBattle = () => {
 	if ((1200-disapearFrame*30)/2 < 0) {
 		g_BGstats = 'report card';
-		for (let i = 0; i < enemy.length; i++) {
-			console.log("moi noi noi juggeren")
-			enemy[i]['HP'] = enemy[i]['FULL HP'];
-			enemy[i]['deathFrame'] = 0;
+		//reseting the enemy.
+		for (let i in g_bestiary) {
+			g_bestiary[i]['HP'] = enemy[i]['FULL HP'];
+			g_bestiary[i]['deathFrame'] = 0;
 		}
+
 		enemy = undefined;
 		g_turnList = [];
 		g_doAction = true;
@@ -230,7 +231,6 @@ const drawButtons = (words) => {
 	}
 }
 
-// draws the finger cursor from final fantasy 
 const drawCursor = () => {
 	imgx = 170 + (200 * g_mousePos[0])
 	imgy = 525 + (80 * g_mousePos[1]);
@@ -248,19 +248,21 @@ const drawCursor = () => {
 
 }
 
-// draws the character's stats bar
 const drawCharacterStats = (words) => {
 	for (let i = 0; i < words.length; i++) {
 		//drawing the blue bar
-		imgx = 220;
-		imgy = 525 + ((50 + 10) * i);
+		let imgx = 220;
+		let imgy = 525 + (60 * i);
 		ctx.fillStyle = '#5c81bc';
 		ctx.fillRect(imgx, imgy, 960, 50);
 		ctx.fillStyle = '#bcbcbc';
 		ctx.rect(imgx, imgy, 960, 50);
 		ctx.stroke();
 		//writing the name of the fighter
-		writeWord(words[i], imgx + 10, imgy + 10);
+		//making the margin
+		imgx += 10;
+		imgy += 10;
+		writeWord(words[i], imgx, imgy);
 
 
 		//writing the HP of the character and the full hp
@@ -271,7 +273,7 @@ const drawCharacterStats = (words) => {
 		writeWord(HPString, imgx, imgy);
 
 		//drawing mana/ full mana
-		imgx = imgx + 100;
+		imgx = imgx + 400;
 		imgy = imgy;
 		HPString = `stm ${g_playerStatus[words[i]]['STM']}/${g_playerStatus[words[i]]['FULL STM']}`;
 
@@ -304,18 +306,20 @@ const actionManagement = (action, attacker, victim) => {
 	switch (action) {
 		//if they chose to attack
 		case 'attack': 
-		    attacker['status'] = action;
-		    const ATK = attacker['ATK'];
+		  attacker['status'] = action;
+		  const ATK = attacker['ATK'];
 			g_DMG = Math.floor((Math.random() *(ATK + 0.99)) + (ATK*5));
 			victim['HP'] -= g_DMG;
 
-			//if you defeated the enemy
 			if (is_in(attacker['NAME'],g_playerStatus['party'])) g_BGstats = `${attacker['NAME']} ${action}`;
+			//if you defeated the enemy
 
 			if (victim['HP'] <= 0 && is_in(attacker['NAME'],g_playerStatus['party'])) {
 				// if you win you gotta let it looks like you killed it not instantly kaboom!
 				victim['status'] = 'death';  
-				gilEarned += victim['gil'];
+				gilEarned += randomizer(victim['gil'][0], victim['gil'][1]);
+				//adding the amount of exp earned.
+				if (is_in(attacker, enemy) === false) attacker['exp earned'] += randomizer(victim['exp'][0], victim['exp'][1]);
 				setTimeout(()=> {
 					// taking the enemy out of the enemy list
 					for (i = 0; i < enemy.length; i++) {
@@ -354,6 +358,7 @@ const actionManagement = (action, attacker, victim) => {
 				g_doAction = true;
 			}, 1000);
 		break;
+
 		default:
 			//if you did black magic.
 			// black magic's animation is longer, so it is
@@ -373,8 +378,11 @@ const actionManagement = (action, attacker, victim) => {
 				if (victim['HP'] <= 0 && is_in(attacker['NAME'],g_playerStatus['party'])) {
 					setTimeout(() => {
 						victim['status'] = 'death';
-						gilEarned += enemy[i]['gil'];
+						gilEarned += randomizer(victim['gil'][0], victim['gil'][1]);
+						//adding the amount of exp earned.
+						if (is_in(attacker, enemy) === false)attacker['exp earned'] += randomizer(victim['exp'][0], victim['exp'][1]);
 					}, 2000)
+
 					setTimeout(() => {
 						// taking the enemy out of the enemy list
 						for (i = 0; i < enemy.length; i++) {
@@ -391,8 +399,6 @@ const actionManagement = (action, attacker, victim) => {
 					}, 3000);
 				}		
 
-				//victim['status'] = 'hit';
-
 				setTimeout(()=>{
 					//lets next person attack
 					g_turnList.shift();
@@ -407,7 +413,5 @@ const actionManagement = (action, attacker, victim) => {
 			}
 		break;
 	}
-	setTimeout(() => {
-		victim['status'] = null;
-	},2000);
+
 } 
