@@ -14,12 +14,12 @@ const randomizer = (start, end) => {
 }
 
 // when button uo it resets the unicode number to Null.
-const handleKeyUp = e => {
+const handleKeyUp = (e) => {
 
 	lastPos = [g_mousePos[0], g_mousePos[1]];
 
 	//changing the position of the cursor 
-	if (enemy !== undefined) { 
+	if (enemy !== undefined || g_BGstats.split(' ')[0] === 'menu') { 
 		if (currentKey['186']) g_mousePos[1] += 1;
 		if (currentKey['76']) g_mousePos[0] -= 1;
 		if (currentKey['80']) g_mousePos[1] -= 1;
@@ -33,6 +33,8 @@ const handleKeyUp = e => {
 			g_BGstats = 'jonny action';	
 		} else if (g_BGstats === 'menu') {
 			g_BGstats = 'game';
+		} else if (g_BGstats.split(' ').length > 1 && g_BGstats.split(' ')[0]) {
+			g_BGstats = 'menu';
 		}
 	}
 
@@ -57,6 +59,7 @@ const handleKeyUp = e => {
 
     	} else if (g_BGstats === 'select target'){
 			actionManagement(g_selectedAction, g_turnList[0], enemy[g_mousePos[1]]);
+
 		}	else if (g_BGstats === 'report card') {
 			g_BGstats = 'game';
 			for (let i = 0; i < g_playerStatus['party'].length;i++) {
@@ -64,6 +67,8 @@ const handleKeyUp = e => {
 				character['exp'] += character['exp earned'];
 				character['exp earned'] = 0;
 			}
+		} else if (g_BGstats === 'menu') {
+			g_BGstats = `menu ${g_menuFunctions[g_mousePos[1]]}`;
 		}
 	}
 
@@ -222,7 +227,14 @@ const drawBG = () => {
 		break;
 		
 		case 'menu':
-
+			// other functions in the menu
+			for (let i = 0; i < g_menuFunctions.length; i++) {
+				writeWord(g_menuFunctions[i], 100, 100+(100*i));
+			}
+			drawCursor('menu');
+		break;
+		
+		case 'menu status':
 			// for every charater 
 			for (let i = 0; i < g_playerStatus['party'].length; i++) {
 
@@ -243,7 +255,21 @@ const drawBG = () => {
 				writeWord(`${charater['exp']} exp / ${charater['next lv']} to next lv`, imgx+200, imgy+170);
 			}
 			writeWord(`${g_playerStatus.items.gil} gil`, 800, 700);
-			
+
+		break;
+
+		case 'menu save':
+			// for every save slot
+			for (let i = 0; i < 3; i++) {
+				//boarder of each slot.
+				ctx.fillStyle = '#000';
+				ctx.rect(5,5+(250*i),1190,240);
+				ctx.stroke();
+
+				writeWord('no saved data', 200, 110+(250*i));
+			}
+			// other functions in the menu
+			drawCursor('save');
 		break;
 
 		case 'surprise':
@@ -493,6 +519,9 @@ const mainLoop = () => {
 					character['next lv'] = character["Lv"] * 1000; 
 				}
 			}
+		}
+		if (g_BGstats.split(' ')[0] === 'menu') {
+			if (g_mousePos[0] !== 0) g_mousePos[0] = 0;
 		}
 	} else {
 		//if you win, there is no point of fighting

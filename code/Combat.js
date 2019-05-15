@@ -231,21 +231,25 @@ const drawButtons = (words) => {
 	}
 }
 
-const drawCursor = () => {
-	imgx = 170 + (200 * g_mousePos[0])
-	imgy = 525 + (80 * g_mousePos[1]);
-	if (g_BGstats === 'select target') {
-		imgx = 200;
-		imgy = 300 + (100 * g_mousePos[1]);
-		//because the way enemies are lined out, two in the front three in the back
-		// when you want to select the fornt ones, you press down till you select them
-		if (g_mousePos[1] > 3) {
+const drawCursor = (mode) => {
+	if (mode === undefined) {
+		mode = 'combat';
+	}
+	if (mode === 'combat') {
+		imgx = 170 + (200 * g_mousePos[0])
+		imgy = 525 + (80 * g_mousePos[1]);
+		if (g_BGstats === 'select target') {
 			imgx = 200;
-			imgy = 250 + (100 * g_mousePos[1]-3);
+			imgy = 300 + (100 * g_mousePos[1]);
 		}
+	} else if (mode === 'menu') {
+		imgx = 200;
+		imgy = 100 + (100 * g_mousePos[1]);
+	} else if (mode === 'save') {
+		imgx = 800;
+		imgy = 125 + (250 * g_mousePos[1]);
 	}
 	ctx.drawImage(cursor, imgx, imgy, 22 * 2, 22 * 2);
-
 }
 
 const drawCharacterStats = (words) => {

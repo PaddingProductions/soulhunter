@@ -396,7 +396,7 @@ const g_bestiary = {
 let enemy;
 
 // percentage chance of enemy appearence every second
-const enemyAppearencePerSecond = 10;
+const enemyAppearencePerSecond = 1;
 
 // dialogues of different people when you talk to them
 // every person has a dialogue array. when you talk to them, you will call the first string in the array
@@ -435,3 +435,6 @@ const tutorial = [
 ];
 //the amount of Gil earned at the end of battles
 let gilEarned = 0;
+
+//an array of functions that will be listed on the side bar of the menu
+const g_menuFunctions = ['status', 'save'];
