@@ -3,7 +3,7 @@ const endBattle = () => {
 		g_BGstats = 'report card';
 		//reseting the enemy.
 		for (let i in g_bestiary) {
-			g_bestiary[i]['HP'] = enemy[i]['FULL HP'];
+			g_bestiary[i]['HP'] = g_bestiary[i]['FULL HP'];
 			g_bestiary[i]['deathFrame'] = 0;
 		}
 
@@ -248,6 +248,9 @@ const drawCursor = (mode) => {
 	} else if (mode === 'save') {
 		imgx = 800;
 		imgy = 125 + (250 * g_mousePos[1]);
+	} else if (mode === 'confirm') {
+		imgx = 495 + (90 * (g_mousePos[0]+1));
+		imgy = 335;
 	}
 	ctx.drawImage(cursor, imgx, imgy, 22 * 2, 22 * 2);
 }
